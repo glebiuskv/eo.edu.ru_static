@@ -21,6 +21,7 @@
 
     <![endif]-->
     <script type="text/javascript" src="public.js"></script>
+    <script type="text/javascript" src="new.js"></script>
 
 
     <link rel="icon" href="img/favicon.ico" type="image/x-icon">
@@ -90,10 +91,10 @@
 
 
     <div class="top_nav_panel">
-        <form>
+        <form name="main_form">
             <div style="float: left; margin-top: 10px; margin-left: 20px">
                 <select id="select__cantons" class="selectpicker_cantons show-menu-arrow show-tick" data-query="cantons"
-                        data-param="canton_id" data-container="body" data-width="110px">
+                        data-param="canton_id" data-container="body" data-width="110px" onchange="main_selector(document, this)">
                     <option value="-1">Все ФО</option>
                     <option value="1">ДФО</option>
                     <option value="2">ПФО</option>
@@ -105,7 +106,7 @@
                     <option value="8">ЮФО</option>
                 </select>
                 <select id="select__states" class="selectpicker_states show-menu-arrow show-tick"
-                        data-query="states_for_canton_id" data-param="state_id" style="display: none"
+                        data-query="states_for_canton_id" data-param="state_id"
                         data-live-search="true" data-container="body">
                     <option value="-1">Все регионы</option>
                 </select>
