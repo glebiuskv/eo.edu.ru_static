@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        .map_container {
+            height: 500px;
+        }
+
+        .table_marks {
+            margin: 0 auto;
+            border-collapse: separate;
+            border-spacing: 20px 0px;
+        }
+
+        .table_marks th > span {
+            font-weight: normal;
+            border-bottom: 1px dotted black;
+            cursor: help;
+        }
+
+        .table_marks td,
+        .table_marks th {
+            text-align: center;
+        }
+
+        .table_marks .age_title_cell {
+            padding-top: 10px;
+            white-space: nowrap;
+            cursor: default;
+        }
+
+        .table_marks td div {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            white-space: nowrap;
+            padding-top: 8px;
+        }
+
+        .title_hint {
+            font-size: 1.4em;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 1280px) {
+            .table_marks td div {
+                font-size: 18px;
+            }
+        }
+    </style>
+    <title></title>
+</head>
+<body>
+<div class="row hot_indexes" style="margin-top: 20px; margin-bottom: 30px;">
+    <table class="table_marks">
+        <tr>
+            <th></th>
+            <th><span class="child_all_title" title="Общая численность детей на отчетную дату. Источник информации – прогнозные данные Росстата." data-placement="right">Общая численность детей на территории Российской Федерации <i>(данные Росстата на 1 января 2015 г.)</i></span></th>
+            <th><span title="Численность детей, охваченных дошкольным образованиям (посещающих организации всех видов собственности и ИП, имеющих лицензию). Источник информации – Федеральная система показателей (данные на 1 число текущего календарного месяца)." data-placement="right">Численность детей, охваченных дошкольным образованием (данные на 1 число текущего календарного месяца)</span></th>
+            <th><span title="Численность детей, поставленных на учет для предоставления места в дошкольных образовательных организациях (государственных и муниципальных), у которых желаемая дата зачисления не позднее 1 сентября текущего учебного года, но не обеспеченных местом на 1 сентября текущего учебного года. Текущим учебным годом считается период с 1 сентября по 31 августа. Источник информации – Федеральная система показателей (данные на 1 число текущего календарного месяца)." data-placement="left">Численность детей, не обеспеченных местом в дошкольных образовательных организациях (данные на 1 число текущего календарного месяца)</span></th>
+            <th><span title="Численность детей, поставленных на учет для предоставления места в дошкольных образовательных организациях (государственных и муниципальных), нуждающихся в предоставлении места вне зависимости от желаемой даты зачисления и таким местом необеспеченных. Источник информации – Федеральная система показателей.(данные на 1 число текущего календарного месяца)." data-placement="left">Численность детей, поставленных на учет для предоставления места в дошкольных образовательных организациях (данные на 1 число текущего календарного месяца)</span></th>
+        </tr>
+        <tr>
+            <td class="age_title_cell"><i>от 0 до 7,5 лет</i></td>
+            <td><div>-</div></td>
+            <td><div class="child_in_org_all_public">-</div></td>
+            <td><div class="child_in_queue_wo_place_public">-</div></td>
+            <td><div class="child_in_queue_all_public">-</div></td>
+        </tr>
+        <tr>
+            <td class="age_title_cell"><i>от 0 до 7 лет</i></td>
+            <td><div class="child_0_7_public">-</div></td>
+            <td><div class="child_in_org_0_7_public">-</div></td>
+            <td><div class="child_in_queue_wo_place_0_7_public">-</div></td>
+            <td><div class="child_in_queue_0_7_public">-</div></td>
+        </tr>
+        <tr>
+            <td class="age_title_cell"><i>от 3 до 7 лет</i></td>
+            <td><div class="child_3_7_public">-</div></td>
+            <td><div class="child_in_org_3_7_public">-</div></td>
+            <td><div class="child_in_queue_wo_place_3_7_public">-</div></td>
+            <td><div class="child_in_queue_3_7_public">-</div></td>
+        </tr>
+        <tr>
+            <td class="age_title_cell"><i>от 0 до 3 лет</i></td>
+            <td><div class="child_0_3_public">-</div></td>
+            <td><div class="child_in_org_0_3_public">-</div></td>
+            <td><div class="child_in_queue_wo_place_0_3_public">-</div></td>
+            <td><div class="child_in_queue_0_3_public">-</div></td>
+        </tr>
+    </table>
+</div>
+<script type="text/javascript">
+    $(function (){
+        var canton = -1;
+        var state = -1;
+        var municipality = -1;
+        var names = null;
+
+        var normalNames = [
+            "child_all_public",
+            "child_3_7_public",
+            "child_0_3_public",
+            "child_0_7_public",
+            "child_in_org_all_public",
+            "child_in_org_3_7_public",
+            "child_in_org_0_3_public",
+            "child_in_org_0_7_public",
+            "child_in_queue_wo_place_public",
+            "child_in_queue_wo_place_3_7_public",
+            "child_in_queue_wo_place_0_3_public",
+            "child_in_queue_wo_place_0_7_public",
+            "child_in_queue_all_public",
+            "child_in_queue_3_7_public",
+            "child_in_queue_0_7_public",
+            "child_in_queue_0_3_public"
+        ];
+
+        var additionalNames = [
+            "child_all",
+            "child_3_7",
+            "child_0_3",
+            "child_0_7",
+            "child_in_org_all_additional",
+            "child_in_org_3_7_additional",
+            "child_in_org_0_3_additional",
+            "child_in_org_0_7_additional",
+            "child_in_queue_wo_place_additional",
+            "child_in_queue_wo_place_3_7_additional",
+            "child_in_queue_wo_place_0_3_additional",
+            "child_in_queue_wo_place_0_7_additional",
+            "child_in_queue_all_additional",
+            "child_in_queue_3_7_additional",
+            "child_in_queue_0_7_additional",
+            "child_in_queue_0_3_additional"
+        ];
+
+        (function() {
+            // hardcore value Angor
+            var userShouldSeeHotDataOnCurrentDate = true;
+            if (userShouldSeeHotDataOnCurrentDate) {
+                _.forOwn(normalNames, function (k, i) {
+                    $('.table_marks .' + k).addClass(additionalNames[i]);
+                });
+                names = additionalNames;
+            }
+            else {
+                names = normalNames;
+            }
+        }());
+
+        var getFilterName = function (a) {
+            if (municipality > -1) {
+                return a + "municipality_id";
+            } else if (state > -1) {
+                return a + "state_id";
+            } else if (canton > -1) {
+                return a + "canton_id";
+            }
+            return "";
+        };
+
+        var getFilterValue = function () {
+            if (municipality > -1) {
+                return municipality;
+            } else if (state > -1) {
+                return state;
+            } else if (canton > -1) {
+                return canton;
+            }
+            return null;
+        };
+
+        var queryBuilder = function () {
+            var start = "top_";
+            var end = "_for_year_month";
+            var list = [];
+
+            _.forOwn(names, function (k) {
+                var filter = getFilterName("_for_");
+                //var val = getFilterValue();
+                var s = start + k + filter + end;
+
+                var o = {
+                    id: s,
+                    action: "getReport"
+                };
+                //o[getFilterName("")] = val;
+                o['canton_id'] = canton;
+                o['state_id'] = state;
+                o['municipality_id'] = municipality;
+
+                list.push($.extend(o, {
+                    el: $(".table_marks ." + k)
+                }));
+            });
+
+            return list;
+        };
+
+        var getMonth = function(date) {
+            return date.getMonth() + 1;
+        };
+
+        var changer = function (el) {
+            return function (data) {
+                var defaultText = ' - ';
+                if (data && data.table
+                        && data.table.length > 0
+                        && data.table[0].length > 0
+                        && data.table[0][0] !== 'null') {
+                    //el.text(data.table[0][0]);
+                    var text = accounting.formatNumber(parseFloat(data.table[0][0]));
+                    var klass = el.attr("class");
+                    if (klass == "availability" || klass == "availability_3y_7p5y") {
+                        // Ugly hardcode for big bosses
+                        if (text === '0') {
+                            text = defaultText;
+                        }
+                        else {
+                            text += " %";
+                        }
+                    }
+                }
+                else {
+                    text = defaultText;
+                }
+
+                el.text(text);
+                waiter.stop(el);
+            };
+        };
+
+        var loadTable = function () {
+            var list = queryBuilder();
+            var date = new Date();
+            var data = {
+                year: date.getFullYear(),
+                month: getMonth(date)
+            };
+            for (var i = 0, l = list.length; i < l; i++) {
+                var k = list[i];
+                var success = changer(k.el);
+                waiter.start(k.el);
+                delete k.el;
+
+                $.extend(data, k);
+                $.ajax({
+                    url: "report.htm",
+                    type : 'GET',
+                    data: data,
+                    dataType: "json",
+                    success: success
+                });
+            }
+        };
+
+        var updater = function (e, object) {
+            canton = object.canton;
+            state = object.state;
+            municipality = object.municipality;
+
+            var childAllIndexName = 'Общая численность детей на территории Российской Федерации <i>(данные Росстата на 1 января 2015 г.)</i>';
+
+            if (state > -1 || municipality > -1) {
+                childAllIndexName = 'Общая численность детей на территории субъекта РФ <i>(данные Росстата на 1 января 2015 г.)</i>';
+            }
+            else if (canton > -1) {
+                childAllIndexName = 'Общая численность детей на территории федерального округа РФ <i>(данные Росстата на 1 января 2015 г.)</i>';
+            }
+            $('.child_all_title').html(childAllIndexName);
+
+            loadTable();
+        };
+
+        $('.active_content').off('change:filter', updater);
+        $('.active_content').on("change:filter", updater);
+        $('.active_content').off('change:hot', updater);
+        $('.active_content').on("change:hot", updater);
+
+        $('.table_marks th > span').each(function (index, el) {
+            $(el).tooltip({
+                container: '.hot_indexes'
+            });
+        });
+    });
+</script>
+<div>
+    <div class="row row_top_margin index_view_panel">
+        <div class="col-md-12">
+            <div id="yamap" class="map_container map_disabled_pointer" style="padding: 0; position: relative; display: none;"></div>
+        </div>
+    </div>
+</div>
+<div id="mapRedirectToRegionModal" class="modal fade doo_enrollment_modal" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Запись в ДОО</h4>
+            </div>
+            <div class="modal-body" style="font-size: 1.2em; word-wrap: break-word;">
+                <div>
+                    <label id="mapRedirectToRegionLabel"></label> (<label>количество МО:</label> <label
+                        id="mapRedirectToRegionMoCountLabel"></label>)
+                </div>
+                <span>Адрес получения услуги: </span>
+                <a id="mapRedirectToRegionLink" target="_blank" href="#"></a>
+                <span id="mapRedirectToRegionLinkAbsence" style="display: none;">-</span>
+
+                <div class="mo_selector_container">
+                    <label>МО:</label>
+                    <select id="mapRedirectToRegionMoSelector" class="show-menu-arrow show-tick" data-live-search="true"
+                            data-width="500px"></select>
+                </div>
+                <div class="mo_link">
+                    <a id="mapRedirectToRegionLink1" target="_blank" href="#">Ссылка на РПГУ</a>
+                </div>
+                <div class="mo_link">
+                    <a id="mapRedirectToRegionLink2" target="_blank" href="#">Ссылка на ЕПГУ</a>
+                </div>
+                <div id="mapNoMoLinks" style="display: none;">
+                    Для Вашего региона услуга оказывается в электронном виде через орган местного самоуправления
+                    муниципального района в сфере образования.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    (function () {
+        var map,
+        // Object with values of main index for all regions (keys = osmId of regions)
+        // mapRegionsData[osmId] = { value: float, hint: '', color: '' }
+                mapRegionsData = {},
+                additionalRegionsData = {},
+                minRegionValue = null,
+                maxRegionValue = 0,
+                mapContainer = $('#yamap'),
+                mapRedirectToRegionModal = $('#mapRedirectToRegionModal'),
+                mapRedirectToRegionLabel = $('#mapRedirectToRegionLabel'),
+                mapRedirectToRegionMoCountLabel = $('#mapRedirectToRegionMoCountLabel'),
+                mapRedirectToRegionMoSelector = $('#mapRedirectToRegionMoSelector'),
+                mapRedirectToRegionLink = $('#mapRedirectToRegionLink'),
+                mapRedirectToRegionLinkAbsence = $('#mapRedirectToRegionLinkAbsence'),
+                mapRedirectToRegionLink1 = $('#mapRedirectToRegionLink1'),
+                mapRedirectToRegionLink2 = $('#mapRedirectToRegionLink2'),
+                mapNoMoLinks = $('#mapNoMoLinks'),
+                modalContent = $('.modal-content', mapRedirectToRegionModal),
+                setLegendMark,
+                curYear = new Date().getUTCFullYear(),
+                curMonth = new Date().getMonth() + 1;
+
+        function loadRegionsLinkForEnrollment() {
+            $.ajax({
+                url: 'report.htm',
+                dataType: 'json',
+                type: 'GET',
+                data: {
+                    action: 'getReport',
+                    id: 'report_url_mapping_for_redirect'
+                },
+                success: function (data) {
+                    if (common.checkJson(data)) {
+                        var table = data.table,
+                                i,
+                                length;
+
+                        for (i = 0, length = table.length; i < length; i += 1) {
+                            var item = table[i],
+                                    osmId = item[0],
+                                    link = item[2];
+
+                            if (!additionalRegionsData.hasOwnProperty(osmId)) {
+                                additionalRegionsData[osmId] = {};
+                            }
+                            additionalRegionsData[osmId].link = link;
+                        }
+                    }
+                }
+            });
+        }
+
+        // Load main for map colors and additional indexes for map hints
+        function loadIndexValuesForMap() {
+            $.ajax({
+                url: 'report.htm',
+                dataType: 'json',
+                type: 'GET',
+                data: {
+                    action: 'getReport',
+                    id: 'map_eo_queue_for_year_month',
+                    year: curYear,
+                    month: curMonth
+                },
+                success: function (data) {
+                    if (common.checkJson(data)) {
+                        var table = data.table,
+                                i,
+                                length,
+                                item,
+                                osmId,
+                                index1,
+                                index2,
+                                index3;
+
+                        for (i = 0, length = table.length; i < length; i += 1) {
+                            item = table[i];
+                            osmId = item[0];
+                            index1 = parseFloat(item[2]);
+                            index2 = item[3];
+                            index3 = item[4];
+
+                            if (!additionalRegionsData.hasOwnProperty(osmId)) {
+                                additionalRegionsData[osmId] = {};
+                            }
+                            additionalRegionsData[osmId].addIndex1 = index2;
+                            additionalRegionsData[osmId].addIndex2 = index3;
+
+                            mapRegionsData[osmId] = {
+                                value: index1,
+                                hint: '',
+                                color: ''
+                            };
+
+                            // Define min, max values
+                            if (!isNaN(index1)) {
+                                if (minRegionValue === null) {
+                                    minRegionValue = index1;
+                                }
+                                else if (index1 < minRegionValue) {
+                                    minRegionValue = index1;
+                                }
+
+                                maxRegionValue = Math.max(index1, maxRegionValue);
+                            }
+                        }
+
+                        if (minRegionValue === null) {
+                            minRegionValue = 0;
+                        }
+
+                        for (osmId in mapRegionsData) {
+                            item = mapRegionsData[osmId];
+                            index1 = item.value;
+
+                            item.hint = getRegionHint(osmId, index1);
+                            if (!isNaN(index1)) {
+                                item.color = colorUtils.get({
+                                    value: index1,
+                                    minValue: minRegionValue,
+                                    maxValue: maxRegionValue,
+                                    isQuality: false,
+                                    isInverted: false
+                                });
+                            }
+                        }
+
+                        applyDataToMap();
+                    }
+                }
+            });
+
+            var getRegionHint = function(osmId, value) {
+                var addIndex1 = additionalRegionsData[osmId].addIndex1,
+                        addIndex2 = additionalRegionsData[osmId].addIndex2;
+
+                value = !isNaN(value) ?
+                        ('<b>' + accounting.formatNumber(value) + '</b>') :
+                        '-';
+
+                addIndex1 = !isNaN(addIndex1) ?
+                        ('<b>' + accounting.formatNumber(addIndex1) + '</b>') :
+                        '-';
+
+                addIndex2 = !isNaN(addIndex2) ?
+                        ('<b>' + accounting.formatNumber(addIndex2) + '</b>') :
+                        '-';
+
+                var hint = [
+                    '<div style="font-size: 1.3em;"><b>',
+                    map.regionsInfo[osmId].name,
+                    '</b></br>',
+                    'Численность детей, охваченных дошкольным образованием от 3 до 7 лет (отражен на карте): ',
+                    value,
+                    '<br/>',
+                    'Численность детей в очереди от 3 до 7 лет: ',
+                    addIndex1,
+                    '<br/>',
+                    'Численность детей, поставленных на учет от 3 до 7 лет: ',
+                    addIndex2,
+                    '</div>'
+                ];
+
+                return hint.join('');
+            };
+        }
+
+        function applyDataToMap() {
+            legend.clear('#yamap');
+
+            if ($.isEmptyObject(mapRegionsData) || !map.isInitialized()) {
+                waiter.stop(mapContainer);
+                return;
+            }
+
+            // Send data to map
+            map.applyRegionsData(mapRegionsData);
+
+            if (minRegionValue !== 0 || maxRegionValue !== 0) {
+                setLegendMark = legend.draw({
+                    containerSelector: '#yamap',
+                    minValue: minRegionValue,
+                    maxValue: maxRegionValue,
+                    title: 'Зачисленные в ДОО, чел. (по РФ)',
+                    isQuality: false,
+                    isInverted: false
+                });
+            }
+
+            waiter.stop(mapContainer);
+        }
+
+        function onMainFilterChangedByItself(e, data) {
+            changeMapView(data);
+        }
+
+        function changeMapView(filterData) {
+            waiter.start(mapContainer);
+
+            if (filterData.canton > 0) {
+                map.showFederalDistrict(filterData.canton);
+            }
+            else {
+                map.showCountry();
+            }
+
+            fixFireFoxGradientDisappearing();
+        }
+
+        function onMapClick(federalDistrictId, regionId) {
+            var filterData = getFilter();
+            regionId = regionId || filterData.state;
+
+            // Replace districtId (canton) and regionId (state) in filter data object
+            filterData.canton = federalDistrictId;
+            filterData.state = regionId;
+
+            if (filterData.state > -1) {
+                showRedirectPopup(filterData.state);
+            }
+            else {
+                triggerMapChanged(filterData);
+                changeMapView(filterData);
+            }
+        }
+
+        function triggerMapChanged(filterData) {
+            // Raise update of all data blocks, that listen to change:hot event
+            $('.top_nav_panel').trigger('change:map', filterData);
+        }
+
+        function fixFireFoxGradientDisappearing() {
+            if (window.navigator.userAgent.toLowerCase().indexOf('firefox') > -1 && maxRegionValue !== 0) {
+                if (minRegionValue === 0 && maxRegionValue === 0) {
+                    return false;
+                }
+
+                legend.clear('#yamap');
+                setTimeout(function () {
+                    setLegendMark = legend.draw({
+                        containerSelector: '#yamap',
+                        minValue: minRegionValue,
+                        maxValue: maxRegionValue,
+                        title: 'Зачисленные в ДОО, чел. (по РФ)',
+                        isQuality: false,
+                        isInverted: false
+                    });
+                }, 0);
+            }
+        }
+
+        function onMoSelectorChanged() {
+            var selOption = $(this).find('option:selected'),
+                    link1 = selOption.data('link1'),
+                    link2 = selOption.data('link2'),
+                    link1IsHidden = false,
+                    link2IsHidden = false;
+
+            if (link1 !== 'null' && link1 !== '') {
+                mapRedirectToRegionLink1.attr('href', link1);
+                mapRedirectToRegionLink1.show();
+            }
+            else {
+                mapRedirectToRegionLink1.hide();
+                link1IsHidden = true;
+            }
+
+            if (link2 !== 'null' && link2 !== '') {
+                mapRedirectToRegionLink2.attr('href', link2);
+                mapRedirectToRegionLink2.show();
+            }
+            else {
+                mapRedirectToRegionLink2.hide();
+                link2IsHidden = true;
+            }
+
+            mapNoMoLinks.toggle(link1IsHidden && link2IsHidden);
+        }
+
+        function showRedirectPopup(regionId) {
+            var osmId = map.getOsmIdByRegionId(regionId),
+                    regionName = map.regionsInfo[osmId].name,
+                    link = additionalRegionsData[osmId].link;
+
+            fillMoSelect(regionId);
+
+            mapRedirectToRegionLabel.text(regionName);
+            if (link) {
+                mapRedirectToRegionLink.show();
+                mapRedirectToRegionLink.text(link);
+                mapRedirectToRegionLink.attr('href', link);
+                mapRedirectToRegionLinkAbsence.hide();
+            }
+            else {
+                mapRedirectToRegionLink.hide();
+                mapRedirectToRegionLinkAbsence.show();
+            }
+
+            mapRedirectToRegionLink1.hide();
+            mapRedirectToRegionLink2.hide();
+            mapNoMoLinks.hide();
+            // For Muscovites
+            mapNoMoLinks.text(
+                    osmId === '102269' ?
+                            'Для Вашего региона услуга оказывается в электронном виде органом исполнительной власти - Департаментом образования города Москвы.' :
+                            'Для Вашего региона услуга оказывается в электронном виде через орган местного самоуправления муниципального района в сфере образования.'
+            );
+
+            mapRedirectToRegionModal.modal('show');
+
+            waiter.stop(mapContainer);
+        }
+
+        function fillMoSelect(regionId) {
+            $.ajax({
+                type: 'GET',
+                dataType: 'json',
+                url: 'report.htm',
+                data: {
+                    action: 'getReport',
+                    id: 'rpgu_epgu_urls',
+                    state_id: regionId
+                },
+                success: function (data) {
+                    if (common.checkJson(data)) {
+
+                        var table = data.table,
+                                fragment = $(document.createDocumentFragment());
+
+                        mapRedirectToRegionMoCountLabel.text(table.length);
+                        _.forOwn(table, function (v) {
+                            var option = $("<option/>")
+                                    .val(v[0])
+                                    .text(v[1])
+                                    .data('link1', v[2])
+                                    .data('link2', v[3]);
+
+                            fragment.append(option);
+                        });
+                        mapRedirectToRegionMoSelector.append(fragment);
+                        mapRedirectToRegionMoSelector.selectpicker('refresh');
+                        mapRedirectToRegionMoSelector.change();
+                    }
+                },
+                complete: function () {
+                    waiter.stop(modalContent);
+                }
+            });
+            mapRedirectToRegionMoSelector.empty();
+            waiter.start(modalContent);
+        }
+
+        function initPage() {
+            loadRegionsLinkForEnrollment();
+
+            map = new Map({
+                containerId: 'yamap',
+                viewMargin: [5, 5, 40, 5],
+                onClick: onMapClick,
+                onReady: function () {
+                    loadIndexValuesForMap();
+                    changeMapView(getFilter());
+                },
+                onChanged: function () {
+                    waiter.stop(mapContainer);
+                },
+                onRegionHover: function (value) {
+                    if (typeof setLegendMark === 'function') {
+                        setLegendMark(value);
+                    }
+                }
+            });
+
+            // Main region navigation changed by itself
+            $('.active_content')
+                    .off('change:filter', onMainFilterChangedByItself)
+                    .on('change:filter', onMainFilterChangedByItself);
+
+            mapRedirectToRegionMoSelector.change(onMoSelectorChanged);
+
+            mapContainer.show();
+            waiter.start(mapContainer);
+        }
+
+        initPage();
+    }());
+</script>
+</body>
+</html>

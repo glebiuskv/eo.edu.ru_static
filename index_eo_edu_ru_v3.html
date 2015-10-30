@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Дошкольное образование - Федеральный сегмент</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="public.css"/>
+
+    <link rel="stylesheet" type="text/css"
+          href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800">
+
+    <script>
+        var USER_CANTON_ID = -1;
+        var USER_STATE_ID = -1;
+        var IS_PUBLIC_USER = true;
+        var IS_GOVERNMENT_USER = false;
+    </script>
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="/gzip_N1536629585/js/libs/html5shiv.js"></script>
+
+    <![endif]-->
+    <script type="text/javascript" src="public.js"></script>
+
+
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+</head>
+<body>
+
+<div id="sidebar-nav">
+
+
+    <div class="customer_block">
+        <img src="img/site-informika-logo.png" width="240" height="100" alt="informika">
+    </div>
+    <div class="main_title">
+        <div>Федеральный сайт</div>
+        <div class="proj_name">Дошкольное образование</div>
+    </div>
+    <ul class="main_menu">
+        <li>
+            <!-- reload carent data from server -->
+            <a href="javascript:void(0)" data-to="map.html">
+            <span>
+                <i class="icon-globe"></i>
+                Показатели
+            </span>
+            </a>
+        </li>
+        <li>
+            <a href="javascript:void(0)" data-to="null"
+               data-hide-top-nav-panel="true">
+            <span>
+                <i class="icon-edit"></i>
+                Запись в ДОО
+            </span>
+            </a>
+        </li>
+    </ul>
+
+
+    <div class="customer_block">
+        <img src="img/minbobr.png" style="margin-top:20px" width="150" alt="Министерство образования и науки">
+    </div>
+
+
+    <ul id="dashboard-menu"></ul>
+
+    <script type="text/javascript">
+        $(function () {
+            // Initialize menu items handling
+            menu.initialize();
+            // Inititate first content page load when menu item click handler is defined
+            douHistory.initialContentPageLoad();
+        });
+    </script>
+
+</div>
+
+<!-- main container -->
+<div class="content">
+    <span class="navbar-inverse">
+        <button type="button" id="menu-toggler" class="navbar-toggle" data-toggle="collapse" title="Меню">
+            <span class="menu_label_line"></span>
+            <span class="menu_label_line"></span>
+            <span class="menu_label_line"></span>
+        </button>
+    </span>
+
+
+    <div class="top_nav_panel">
+        <form>
+            <div style="float: left; margin-top: 10px; margin-left: 20px">
+                <select id="select__cantons" class="selectpicker_cantons show-menu-arrow show-tick" data-query="cantons"
+                        data-param="canton_id" data-container="body" data-width="110px">
+                    <option value="-1">Все ФО</option>
+                    <option value="1">ДФО</option>
+                    <option value="2">ПФО</option>
+                    <option value="3">СЗФО</option>
+                    <option value="4">СКФО</option>
+                    <option value="5">СФО</option>
+                    <option value="6">УФО</option>
+                    <option value="7">ЦФО</option>
+                    <option value="8">ЮФО</option>
+                </select>
+            </div>
+            <div style="float: left; margin-top: 10px; margin-left: 10px;  display: none">
+                <select id="select__states" class="selectpicker_states show-menu-arrow"
+                        data-query="states_for_canton_id" data-param="state_id" style="display: none"
+                        data-live-search="true" data-container="body">
+                    <option value="-1">Все регионы</option>
+                </select>
+            </div>
+            <div style="float: left; margin-top: 10px; margin-left: 10px; display: none" class="municipality_block">
+                <select id="select__municipalities" class="selectpicker_municipalities show-menu-arrow show-tick"
+                        data-live-search="true" data-query="municipalities_for_state_id_with_recursion"
+                        style="display: none" data-container="body" data-width="400px">
+                    <option value="-1">Все муниципальные образования</option>
+                </select>
+            </div>
+        </form>
+    </div>
+
+
+    <div id="pad-wrapper">
+    </div>
+    <div class="content_hover">
+    </div>
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,39 @@
+@font-face {
+    font-family: 'texgyreadventorbold';
+    src: url('texgyreadventor-bold.eot');
+    src: url('texgyreadventor-bold.eot?#iefix') format('embedded-opentype'),
+         url('texgyreadventor-bold.woff') format('woff'),
+         url('texgyreadventor-bold.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'texgyreadventorbold_italic';
+    src: url('texgyreadventor-bolditalic.eot');
+    src: url('texgyreadventor-bolditalic.eot?#iefix') format('embedded-opentype'),
+         url('texgyreadventor-bolditalic.woff') format('woff'),
+         url('texgyreadventor-bolditalic.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'texgyreadventoritalic';
+    src: url('texgyreadventor-italic.eot');
+    src: url('texgyreadventor-italic.eot?#iefix') format('embedded-opentype'),
+         url('texgyreadventor-italic.woff') format('woff'),
+         url('texgyreadventor-italic.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'texgyreadventorregular';
+    src: url('texgyreadventor-regular.eot');
+    src: url('texgyreadventor-regular.eot?#iefix') format('embedded-opentype'),
+         url('texgyreadventor-regular.woff') format('woff'),
+         url('texgyreadventor-regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
