@@ -1,10 +1,6 @@
 /**
  * Created by Андрей on 30.10.2015.
  */
-var ym;
-var fed;
-var reg;
-var dataEo;
 
 function start() {
 
@@ -15,15 +11,11 @@ $(document).ready(function () {
     var fed = 0;
     var reg = 0;
 
-    //var data1 =
     getData(ym, fed, reg);
-    //fill_table(data1);
-    //show_graph();
-    //mainSelector.change(main_selector(mainSelector[0]));
 });
 
 function main_selector(form) {
-
+    var ym = '201511';
     var fed = form.value;
     var slaveSelector = $("select[id='select__states']");
 
@@ -34,10 +26,7 @@ function main_selector(form) {
         // наполняем втрой селект данными
     }
     reg = 0;
-    //var data =
     getData(ym, fed, reg);
-    //fill_table(data);
-    //show_graph();
 }
 
 function slave_selector(form) {
@@ -68,10 +57,6 @@ function fill_table(data) {
     $('.in_doo_00_30').text(data.in_doo_00_30);
     $('.in_queue_00_30').text(data.in_queue_00_30);
     $('.wo_place_00_30').text(data.wo_place_00_30);
-}
-
-function show_graph() {
-
 }
 
 function getData(ym, fed1, reg) {
