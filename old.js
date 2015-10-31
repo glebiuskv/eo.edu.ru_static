@@ -165,7 +165,7 @@ $(function () {
                 element.addClass("show-tick");
                 element.selectpicker('refresh');
             } else {
-                element.removeAttr("data-live-search");
+                element.removeAttr("dataEo-live-search");
                 element.selectpicker('refresh');
             }
 

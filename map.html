@@ -210,7 +210,7 @@
                         && data.table.length > 0
                         && data.table[0].length > 0
                         && data.table[0][0] !== 'null') {
-                    //el.text(data.table[0][0]);
+                    //el.text(dataEo.table[0][0]);
                     var text = accounting.formatNumber(parseFloat(data.table[0][0]));
                     var klass = el.attr("class");
                     if (klass == "availability" || klass == "availability_3y_7p5y") {
@@ -506,7 +506,7 @@
                 return;
             }
 
-            // Send data to map
+            // Send dataEo to map
             map.applyRegionsData(mapRegionsData);
 
             if (minRegionValue !== 0 || maxRegionValue !== 0) {
@@ -544,7 +544,7 @@
             var filterData = getFilter();
             regionId = regionId || filterData.state;
 
-            // Replace districtId (canton) and regionId (state) in filter data object
+            // Replace districtId (canton) and regionId (state) in filter dataEo object
             filterData.canton = federalDistrictId;
             filterData.state = regionId;
 
@@ -558,7 +558,7 @@
         }
 
         function triggerMapChanged(filterData) {
-            // Raise update of all data blocks, that listen to change:hot event
+            // Raise update of all dataEo blocks, that listen to change:hot event
             $('.top_nav_panel').trigger('change:map', filterData);
         }
 

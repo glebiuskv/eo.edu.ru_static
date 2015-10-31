@@ -4,38 +4,27 @@
 var ym;
 var fed;
 var reg;
-var plashka;
-var data;
+var dataEo;
 
-/*$(function(){
-    // как только загрузилась страница показываем плашку и график по умолчанию
-    ym = '201511';
-    fed = 0;
-    reg = 0;
+function start() {
 
-    plashka = Plashka();
-    plashka.fill(fed,reg);
-    fill_table();
-    show_graph();
+}
 
-});*/
+$(document).ready(function () {
+    var ym = '201511';
+    var fed = 0;
+    var reg = 0;
 
-$(document).ready(function(){
-
-    ym = '201511';
-    fed = 0;
-    reg = 0;
-
-    getData();
-    $().delay(3000);
-    fill_table();
-    show_graph();
-
+    //var data1 =
+    getData(ym, fed, reg);
+    //fill_table(data1);
+    //show_graph();
+    //mainSelector.change(main_selector(mainSelector[0]));
 });
 
 function main_selector(form) {
 
-    fed = form.value;
+    var fed = form.value;
     var slaveSelector = $("select[id='select__states']");
 
     if (fed != 0) {
@@ -45,9 +34,10 @@ function main_selector(form) {
         // наполняем втрой селект данными
     }
     reg = 0;
-    getData();
-    fill_table();
-    show_graph();
+    //var data =
+    getData(ym, fed, reg);
+    //fill_table(data);
+    //show_graph();
 }
 
 function slave_selector(form) {
@@ -56,8 +46,9 @@ function slave_selector(form) {
 
 }
 
-function fill_table() {
+function fill_table(data) {
 
+    //alert('Приступить к работе.');
     $('.rosstat_00_80').text(data.rosstat_00_80);
     $('.in_doo_00_80').text(data.in_doo_00_80);
     $('.in_queue_00_80').text(data.in_queue_00_80);
@@ -83,14 +74,9 @@ function show_graph() {
 
 }
 
-function getREST_API() {
-
-}
-
-function getData(){
-    var url = "http://cabinetv3.do.edu.ru:8081/api/header?ym=" + ym + "&fed=" + fed + "&reg=" + reg + "&mun=0";
+function getData(ym, fed1, reg) {
+    var url = "http://cabinetv3.do.edu.ru:8081/api/header?ym=" + ym + "&fed=" + fed1 + "&reg=" + reg + "&mun=0";
     $.getJSON(url, function (resp) {
-        data = resp;
-        alert("data.rosstat_00_80="+data.rosstat_00_80 + " win.fed=" + fed);
+        fill_table(resp);
     });
 }
