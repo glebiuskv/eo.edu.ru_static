@@ -74,21 +74,25 @@
     <div class="top_nav_panel">
         <form name="main_form">
             <div style="float: left; margin-top: 10px; margin-left: 20px">
-                <select id="select__cantons" class="selectpicker_cantons show-menu-arrow show-tick" data-query="cantons"
-                        data-param="canton_id" data-container="body" data-width="110px" onchange="main_selector(document, this)">
+                <select id="select__cantons" class="selectpicker_cantons show-menu-arrow show-tick"
+                        data-query="cantons" data-param="canton_id" data-container="body" data-width="110px"
+                        onClick="main_selector(this);">
+
                     <option value="0">Все ФО</option>
-                    <option value="1">ДФО</option>
-                    <option value="2">ПФО</option>
+                    <option value="1">ЦФО</option>
+                    <option value="2">ЮФО</option>
                     <option value="3">СЗФО</option>
-                    <option value="4">СКФО</option>
+                    <option value="4">ДФО</option>
                     <option value="5">СФО</option>
                     <option value="6">УФО</option>
-                    <option value="7">ЦФО</option>
-                    <option value="8">ЮФО</option>
+                    <option value="7">ПФО</option>
+                    <option value="8">СКФО</option>
+                    <option value="9">КФО</option>
                 </select>
                 <select id="select__states" class="selectpicker_states show-menu-arrow show-tick"
                         data-query="states_for_canton_id" data-param="state_id"
-                        data-live-search="true" data-container="body">
+                        data-live-search="true" data-container="body"
+                        onchange="slave_selector(this)">
                     <option value="0">Все регионы</option>
                 </select>
                 </div>
@@ -97,6 +101,136 @@
 
 
     <div id="pad-wrapper">
+
+        <div class="active_content" id="charts__map">
+
+            <style>
+                .map_container {
+                    height: 500px;
+                }
+            </style>
+            <style>
+                .table_marks {
+                    margin: 0 auto;
+                    border-collapse: separate;
+                    border-spacing: 20px 0px;
+                }
+
+                .table_marks th > span {
+                    font-weight: normal;
+                    border-bottom: 1px dotted black;
+                    cursor: help;
+                }
+
+                .table_marks td,
+                .table_marks th {
+                    text-align: center;
+                }
+
+                .table_marks .age_title_cell {
+                    padding-top: 10px;
+                    white-space: nowrap;
+                    cursor: default;
+                }
+
+                .table_marks td div {
+                    font-size: 24px;
+                    font-weight: bold;
+                    text-align: center;
+                    white-space: nowrap;
+                    padding-top: 8px;
+                }
+
+                .title_hint {
+                    font-size: 1.4em;
+                    margin-bottom: 10px;
+                }
+
+                @media (max-width: 1280px) {
+                    .table_marks td div {
+                        font-size: 18px;
+                    }
+                }
+            </style>
+            <div class="row hot_indexes" style="margin-top: 20px; margin-bottom: 30px;">
+                <table class="table_marks">
+                    <tbody><tr>
+                        <th></th>
+                        <th><span data-original-title="Общая численность детей на отчетную дату. Источник информации – прогнозные данные Росстата." class="child_all_title" title="" data-placement="right">Общая численность детей на территории Российской Федерации <i>(данные Росстата на 1 января 2015 г.)</i></span></th>
+                        <th><span data-original-title="Численность детей, охваченных дошкольным образованиям (посещающих организации всех видов собственности и ИП, имеющих лицензию). Источник информации – Федеральная система показателей (данные на 1 число текущего календарного месяца)." title="" data-placement="right">Численность детей, охваченных дошкольным образованием (данные на 1 число текущего календарного месяца)</span></th>
+                        <th><span data-original-title="Численность детей, поставленных на учет для предоставления места в дошкольных образовательных организациях (государственных и муниципальных), у которых желаемая дата зачисления не позднее 1 сентября текущего учебного года, но не обеспеченных местом на 1 сентября текущего учебного года. Текущим учебным годом считается период с 1 сентября по 31 августа. Источник информации – Федеральная система показателей (данные на 1 число текущего календарного месяца)." title="" data-placement="left">Численность детей, не обеспеченных местом в дошкольных образовательных организациях (данные на 1 число текущего календарного месяца)</span></th>
+                        <th><span data-original-title="Численность детей, поставленных на учет для предоставления места в дошкольных образовательных организациях (государственных и муниципальных), нуждающихся в предоставлении места вне зависимости от желаемой даты зачисления и таким местом необеспеченных. Источник информации – Федеральная система показателей.(данные на 1 число текущего календарного месяца)." title="" data-placement="left">Численность детей, поставленных на учет для предоставления места в дошкольных образовательных организациях (данные на 1 число текущего календарного месяца)</span></th>
+                    </tr>
+                    <tr>
+                        <td class="age_title_cell"><i>от 0 до 7,5 лет</i></td>
+                        <td><div style="position: relative;" class="rosstat_00_80"></div></td>
+                        <td><div style="position: relative;" class="in_doo_00_80"></div></td>
+                        <td><div style="position: relative;" class="wo_place_00_80"></div></td>
+                        <td><div style="position: relative;" class="in_queue_00_80"></div></td>
+                    </tr>
+                    <tr>
+                        <td class="age_title_cell"><i>от 0 до 7 лет</i></td>
+                        <td><div style="position: relative;" class="rosstat_00_70"></div></td>
+                        <td><div style="position: relative;" class="in_doo_00_70"></div></td>
+                        <td><div style="position: relative;" class="wo_place_00_70"></div></td>
+                        <td><div style="position: relative;" class="in_queue_00_70"></div></td>
+                    </tr>
+                    <tr>
+                        <td class="age_title_cell"><i>от 3 до 7 лет</i></td>
+                        <td><div style="position: relative;" class="rosstat_30_70"></div></td>
+                        <td><div style="position: relative;" class="in_doo_30_70"></div></td>
+                        <td><div style="position: relative;" class="wo_place_30_70"></div></td>
+                        <td><div style="position: relative;" class="in_queue_30_70"></div></td>
+                    </tr>
+                    <tr>
+                        <td class="age_title_cell"><i>от 0 до 3 лет</i></td>
+                        <td><div style="position: relative;" class="rosstat_00_30"></div></td>
+                        <td><div style="position: relative;" class="in_doo_00_30"></div></td>
+                        <td><div style="position: relative;" class="wo_place_00_30"></div></td>
+                        <td><div style="position: relative;" class="in_queue_00_30"></div></td>
+                    </tr>
+                    </tbody></table>
+            </div>
+            <div>
+                <div class="row row_top_margin index_view_panel">
+                    <div class="col-md-12">
+                        <div id="yamap" class="map_container map_disabled_pointer" style="padding: 0px; position: relative;"><ymaps></ymaps><ymaps style="z-index: 0; width: 1001px; height: 498px;" class="ymaps-map ymaps-i-ua_js_yes"><ymaps unselectable="on" style="z-index: 500; position: absolute; width: 1001px; height: 498px; left: 0px; top: 0px; transform: translate3d(0px, 0px, 0px) scale(1, 1); cursor: url(&quot;https://api-maps.yandex.ru/2.0.40/release/../images/ef50ac9e93aaebe3299791c79f277f8e.cur&quot;) 16 16, url(&quot;https://api-maps.yandex.ru/2.0.40/release/../images/ef50ac9e93aaebe3299791c79f277f8e.cur&quot;), move;" class="ymaps-glass-pane ymaps-events-pane"></ymaps><ymaps style="z-index: 100; position: absolute; left: 501px; top: 249px;" class="ymaps-layers-pane"><ymaps style="z-index: 150; position: absolute; transform: translate3d(0px, 0px, 0px) scale(1, 1);"><canvas width="1257" height="754" style="position: absolute; width: 1257px; height: 754px; left: -628px; top: -377px;"></canvas></ymaps><ymaps style="z-index: 200; position: absolute; transform: translate3d(0px, 0px, 0px) scale(1, 1);"><canvas width="1257" height="754" style="position: absolute; width: 1257px; height: 754px; left: -628px; top: -377px;"></canvas></ymaps></ymaps><ymaps style="z-index: 1000; position: absolute;" class="ymaps-copyrights-pane"><ymaps><ymaps class="ymaps-copyrights-logo"><ymaps style="display: none;" class="ymaps-logotype-div"><a href="https://maps.yandex.ru/?origin=jsapi&amp;ll=105.393266,68.171436&amp;z=2.5877270775123793&amp;l=map" target="_blank" class="ymaps-logo-link ymaps-logo-link-ru"><ymaps class="ymaps-logo-link-wrap"></ymaps></a></ymaps></ymaps><ymaps class="ymaps-copyrights-legend"><ymaps style="display: none;" class="ymaps-copyright-legend-container"><ymaps class="ymaps-copyright-legend"><ymaps class="ymaps-copyright-legend-element ymaps-copyright-legend-element-black"><ymaps style="display: inline;">© Яндекс</ymaps>, <ymaps style="display: inline;">© Участники <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a></ymaps>, <ymaps style="display: inline;">© <a href="http://maps.yandex.ru">Яндекс</a></ymaps></ymaps></ymaps><ymaps class="ymaps-copyright-agreement ymaps-copyright-agreement-black"><ymaps class="ymaps-copyrights-ua-extended"><ymaps><a href="https://maps.yandex.ru/?ll=105.393266,68.171436&amp;z=2.5877270775123793&amp;origin=jsapi&amp;fb" target="_blank">Ошибка на карте?</a> · </ymaps></ymaps><a target="_blank" href="https://legal.yandex.ru/maps_termsofuse/?lang=ru">Условия использования</a></ymaps></ymaps></ymaps></ymaps></ymaps><ymaps style="z-index: 300; position: absolute; left: 501px; top: 249px; visibility: visible;" class="ymaps-graphics-pane"><ymaps unselectable="on"><ymaps style="top: 0px; left: 0px; transform: translateZ(0px); position: absolute; z-index: 2099216;" class="graphics-canvas"><ymaps><canvas height="257" width="257" style="position: absolute; width: 257px; height: 257px; left: -449px; top: -368px;"></canvas><canvas height="257" width="257" style="position: absolute; width: 257px; height: 257px; left: -449px; top: -111px;"></canvas><canvas height="257" width="257" style="position: absolute; width: 257px; height: 257px; left: -449px; top: 146px;"></canvas><canvas height="257" width="257" style="position: absolute; width: 257px; height: 257px; left: -192px; top: -368px;"></canvas><canvas height="257" width="257" style="position: absolute; width: 257px; height: 257px; left: -192px; top: -111px;"></canvas><canvas height="257" width="257" style="position: absolute; width: 257px; height: 257px; left: -192px; top: 146px;"></canvas><canvas height="257" width="257" style="position: absolute; width: 257px; height: 257px; left: 65px; top: -368px;"></canvas><canvas height="257" width="257" style="position: absolute; width: 257px; height: 257px; left: 65px; top: -111px;"></canvas><canvas height="257" width="257" style="position: absolute; width: 257px; height: 257px; left: 65px; top: 146px;"></canvas><canvas height="110" width="46" style="position: absolute; width: 46px; height: 110px; left: 322px; top: -44px;"></canvas></ymaps></ymaps></ymaps></ymaps></ymaps><svg style="position: absolute; bottom: 0; right: 0;" height="60" width="320"><g transform="translate(20,20)"><defs><linearGradient spreadMethod="pad" x2="100%" x1="0%" id="gradient"><stop stop-color="rgb(255,255,255)" offset="0%"></stop><stop stop-color="rgb(150,230,150)" offset="100%"></stop></linearGradient></defs><rect style="fill: url(&quot;#gradient&quot;) none;" height="16" width="270"></rect><rect stroke-width="1" stroke="#fff" fill-opacity="0" height="16" width="54" x="0"></rect><rect stroke-width="1" stroke="#fff" fill-opacity="0" height="16" width="54" x="54"></rect><rect stroke-width="1" stroke="#fff" fill-opacity="0" height="16" width="54" x="108"></rect><rect stroke-width="1" stroke="#fff" fill-opacity="0" height="16" width="54" x="162"></rect><rect stroke-width="1" stroke="#fff" fill-opacity="0" height="16" width="54" x="216"></rect><text dy=".35em" text-anchor="end" y="-15" x="270">Зачисленные в ДОО, чел. (по РФ)</text><text font-size="0.9em" dy=".35em" text-anchor="middle" y="26" x="0">0</text><text font-size="0.9em" dy=".35em" text-anchor="middle" y="26" x="54">66 443</text><text font-size="0.9em" dy=".35em" text-anchor="middle" y="26" x="108">132 886</text><text font-size="0.9em" dy=".35em" text-anchor="middle" y="26" x="162">199 329</text><text font-size="0.9em" dy=".35em" text-anchor="middle" y="26" x="216">265 772</text><text font-size="0.9em" dy=".35em" text-anchor="middle" y="26" x="270">332 215</text><rect x="0" y="-2" style="fill: rgb(0, 0, 0);" height="20" width="0"></rect></g></svg></div>
+                    </div>
+                </div>
+            </div>
+            <div id="mapRedirectToRegionModal" class="modal fade doo_enrollment_modal" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h4 class="modal-title">Запись в ДОО</h4>
+                        </div>
+                        <div class="modal-body" style="font-size: 1.2em; word-wrap: break-word;">
+                            <div>
+                                <label id="mapRedirectToRegionLabel"></label> (<label>количество МО:</label> <label id="mapRedirectToRegionMoCountLabel"></label>)
+                            </div>
+                            <span>Адрес получения услуги: </span>
+                            <a id="mapRedirectToRegionLink" target="_blank" href="#"></a>
+                            <span id="mapRedirectToRegionLinkAbsence" style="display: none;">-</span>
+
+                            <div class="mo_selector_container">
+                                <label>МО:</label>
+                                <select id="mapRedirectToRegionMoSelector" class="show-menu-arrow show-tick" data-live-search="true" data-width="500px"></select>
+                            </div>
+                            <div class="mo_link">
+                                <a id="mapRedirectToRegionLink1" target="_blank" href="#">Ссылка на РПГУ</a>
+                            </div>
+                            <div class="mo_link">
+                                <a id="mapRedirectToRegionLink2" target="_blank" href="#">Ссылка на ЕПГУ</a>
+                            </div>
+                            <div id="mapNoMoLinks" style="display: none;">
+                                Для Вашего региона услуга оказывается в электронном виде через орган местного самоуправления
+                                муниципального района в сфере образования.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div></div>
     </div>
     <div class="content_hover">
     </div>
