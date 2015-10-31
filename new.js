@@ -1,33 +1,43 @@
 /**
- * Created by Андрей on 30.10.2015.
+ * Created by РђРЅРґСЂРµР№ on 30.10.2015.
  */
 var ym = '201510';
+var fed = 0;
+var reg = 0;
+var plashka = Plashka();
+
+$(function(){
+    // РєР°Рє С‚РѕР»СЊРєРѕ Р·Р°РіСЂСѓР·РёР»Р°СЃСЊ СЃС‚СЂР°РЅРёС†Р° РїРѕРєР°Р·С‹РІР°РµРј РїР»Р°С€РєСѓ Рё РіСЂР°С„РёРє РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
+    plashka.fill(fed,reg);
+    show_plashka();
+    show_graph();
+
+});
 
 function main_selector(doc, form) {
-    //alert("doc=" + $("select[id='select__states']") + " form=" + form.value);
-    var fed = form.value;
+
+    fed = form.value;
     var slaveSelector = $("select[id='select__states']");
 
-    if (fed == -1) {
-        //просто шлём запрос в рест апи
-        p = Plashka().fill(0,0);
-        alert(p.data.rosstat_00_30);
-    } else {
-        // запрашиваем список субъектов федерации по номеру ФО из рест апи
-        // извлекаем нужные нам данные
-        // наполняем втрой селект данными и вызываем рест апи для ФО
-    }
+    if (fed != 0) {
 
+        // Р·Р°РїСЂР°С€РёРІР°РµРј СЃРїРёСЃРѕРє СЃСѓР±СЉРµРєС‚РѕРІ С„РµРґРµСЂР°С†РёРё РїРѕ РЅРѕРјРµСЂСѓ Р¤Рћ РёР· СЂРµСЃС‚ Р°РїРё
+        // РёР·РІР»РµРєР°РµРј РЅСѓР¶РЅС‹Рµ РЅР°Рј РґР°РЅРЅС‹Рµ
+        // РЅР°РїРѕР»РЅСЏРµРј РІС‚СЂРѕР№ СЃРµР»РµРєС‚ РґР°РЅРЅС‹РјРё
+    }
+    plashka.fill(fed,"0");
+    show_plashka();
+    show_graph();
 }
 
 function slave_selector(doc, form) {
-    var reg = form.value;
+    reg = form.value;
     var main_selector = $("select[id='select__cantons']");
 
 }
 
 function show_plashka() {
-    p1 = Plashka().fill();
+
 }
 
 function show_graph() {
@@ -44,10 +54,7 @@ function Plashka() {
         fill: function (fed, reg) {
             var url = "http://cabinetv3.do.edu.ru:8081/api/header?ym=" + ym + "&fed=" + fed + "&reg=" + reg + "&mun=0";
             $.getJSON(url, function (resp) {
-                $.each(resp, function(key, val){
-                    alert(key,val);
-                })
-                data = $.parseJSON(resp);
+                data = resp;
             });
         }
     }
