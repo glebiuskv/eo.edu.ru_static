@@ -10,17 +10,7 @@
     <link rel="stylesheet" type="text/css"
           href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800">
 
-    <script>
-        var USER_CANTON_ID = -1;
-        var USER_STATE_ID = -1;
-        var IS_PUBLIC_USER = true;
-        var IS_GOVERNMENT_USER = false;
-    </script>
-    <!--[if lt IE 9]>
-    <script type="text/javascript" src="/gzip_N1536629585/js/libs/html5shiv.js"></script>
-
-    <![endif]-->
-    <script type="text/javascript" src="public.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
     <script type="text/javascript" src="new.js"></script>
 
 
@@ -68,15 +58,6 @@
 
     <ul id="dashboard-menu"></ul>
 
-    <script type="text/javascript">
-        $(function () {
-            // Initialize menu items handling
-            menu.initialize();
-            // Inititate first content page load when menu item click handler is defined
-            douHistory.initialContentPageLoad();
-        });
-    </script>
-
 </div>
 
 <!-- main container -->
@@ -95,7 +76,7 @@
             <div style="float: left; margin-top: 10px; margin-left: 20px">
                 <select id="select__cantons" class="selectpicker_cantons show-menu-arrow show-tick" data-query="cantons"
                         data-param="canton_id" data-container="body" data-width="110px" onchange="main_selector(document, this)">
-                    <option value="-1">Все ФО</option>
+                    <option value="0">Все ФО</option>
                     <option value="1">ДФО</option>
                     <option value="2">ПФО</option>
                     <option value="3">СЗФО</option>
@@ -108,7 +89,7 @@
                 <select id="select__states" class="selectpicker_states show-menu-arrow show-tick"
                         data-query="states_for_canton_id" data-param="state_id"
                         data-live-search="true" data-container="body">
-                    <option value="-1">Все регионы</option>
+                    <option value="0">Все регионы</option>
                 </select>
                 </div>
         </form>
