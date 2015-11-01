@@ -10,9 +10,10 @@
         <link rel="stylesheet" type="text/css"
               href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800">
     -->
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-    <script type="text/javascript" src="new.js"></script>
+   <!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>-->
 
+    <script type="text/javascript" src="public.js"></script>
+    <script type="text/javascript" src="new.js"></script>
 
     <link rel="icon" href="img/favicon.ico" type="image/x-icon">
     <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
@@ -30,7 +31,7 @@
         <div class="proj_name">Дошкольное образование</div>
     </div>
     <ul class="main_menu">
-        <li>
+        <li class="active">
             <!-- reload carent dataEo from server -->
             <a href="javascript:void(0)" data-to="map.html">
             <span>
@@ -57,6 +58,14 @@
 
 
     <ul id="dashboard-menu"></ul>
+    <script type="text/javascript">
+        $(function(){
+            // Initialize menu items handling
+            menu.initialize();
+            // Inititate first content page load when menu item click handler is defined
+            douHistory.initialContentPageLoad();
+        });
+    </script>
 
 </div>
 
@@ -75,7 +84,6 @@
         <form name="main_form">
             <div style="float: left; margin-top: 10px; margin-left: 20px">
                 <select id="select__cantons" onchange="main_selector(this);">
-
                     <option value="0">Все ФО</option>
                     <option value="1">ЦФО</option>
                     <option value="2">ЮФО</option>
@@ -189,7 +197,10 @@
                     </tr>
                     </tbody></table>
             </div>
-</div>
+        </div>
+    </div>
+  </div>
+
 
 
 </body>
