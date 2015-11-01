@@ -2,7 +2,7 @@
  * Created by Андрей on 30.10.2015.
  */
 
-var ym = '201511';
+var ym = '201510';
 var fed = 0;
 var reg = 0;
 
