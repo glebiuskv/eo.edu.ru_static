@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>dou-public</artifactId>
+    <groupId>ru.informika.dou</groupId>
+    <version>1.0</version>
+   <!-- <parent>
+        <groupId>ru.informika.dou</groupId>
+        <artifactId>dou-parent</artifactId>
+        <version>8.3</version>
+    </parent>-->
+    <packaging>war</packaging>
+    <name>dou-web-server</name>
+    <build>
+    <pluginManagement>
+    <plugins>
+        <plugin>
+            <groupId>net.jawr</groupId>
+            <artifactId>maven-jawr-plugin</artifactId>
+            <version>1.0</version>
+            <executions>
+                <execution>
+                    <!-- Use this phase so that we could deal with the war folder just before the war package -->
+                    <phase>prepare-package</phase>
+                    <goals>
+                        <goal>bundle</goal>
+                    </goals>
+                </execution>
+            </executions>
+            <configuration>
+                <generateCDNFiles>true</generateCDNFiles>
+            </configuration>
+        </plugin>
+    </plugins>
+    </pluginManagement>
+    </build>
+
+
+   <dependencies>
+
+        <dependency>
+            <groupId>net.jawr</groupId>
+            <artifactId>jawr-core</artifactId>
+            <version>3.8</version>
+        </dependency>
+    </dependencies>
+
+</project>
