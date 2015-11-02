@@ -2,28 +2,23 @@
  * Created by Андрей on 30.10.2015.
  */
 
-function start() {
-
-}
+var ym = '201510';
+var fed = 0;
+var reg = 0;
 
 $(document).ready(function () {
-    var ym = '201511';
-    var fed = 0;
-    var reg = 0;
-
     getData(ym, fed, reg);
 });
 
 function main_selector(form) {
-    var ym = '201511';
-    var fed = form.value;
-    var slaveSelector = $("select[id='select__states']");
+    fed = form.value;
 
     if (fed != 0) {
-
         // запрашиваем список субъектов федерации по номеру ФО из рест апи
-        // извлекаем нужные нам данные
-        // наполняем втрой селект данными
+        getReg(fed);
+    }else{
+        $('#select__states').empty();
+        $('#select__states').append('<option value="0">Все регионы</option>');
     }
     reg = 0;
     getData(ym, fed, reg);
@@ -31,7 +26,7 @@ function main_selector(form) {
 
 function slave_selector(form) {
     reg = form.value;
-    var main_selector = $("select[id='select__cantons']");
+    getData(ym, fed, reg);
 
 }
 
@@ -63,5 +58,23 @@ function getData(ym, fed1, reg) {
     var url = "http://cabinetv3.do.edu.ru:8081/api/header?ym=" + ym + "&fed=" + fed1 + "&reg=" + reg + "&mun=0";
     $.getJSON(url, function (resp) {
         fill_table(resp);
+    });
+}
+
+function getReg(fed){
+    var url = "http://cabinetv3.do.edu.ru:8081/api/frm?mun=0&reg=0&fed=0";
+    var carenFed;
+    var selectReg = $('#select__states');
+    selectReg.empty();
+    $.getJSON(url, function(data){
+        data.forEach(function(item){
+
+            if (item.fed == fed){
+                var reg = item.reg;
+                var name = item.shortname;
+                if (reg == 0){name = "Все регионы"}
+                selectReg.append('<option value="' + reg + '">' + name + '</option>');
+            }
+        });
     });
 }
