@@ -8,7 +8,7 @@
         <!--!!!Отработает Spring MVC на HomeController!!!-->
         <!--<welcome-file>site.htm</welcome-file>-->
         <!--<welcome-file>home.htm</welcome-file>-->
-        <welcome-file>index_eo_edu_ru_v3.html</welcome-file>
+        <welcome-file>index.html</welcome-file>
     </welcome-file-list>
     <error-page>
         <error-code>404</error-code>
@@ -57,10 +57,18 @@
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
-
     <servlet-mapping>
         <servlet-name>CSSServlet</servlet-name>
         <url-pattern>*.css</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>report</servlet-name>
+        <servlet-class>ru.informika.edu.eo.Report</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>report</servlet-name>
+        <url-pattern>*.htm</url-pattern>
     </servlet-mapping>
 
 </web-app>
