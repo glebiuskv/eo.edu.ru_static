@@ -32,7 +32,6 @@ function slave_selector(form) {
 
 function fill_table(data) {
 
-    //alert('Приступить к работе.');
     $('.rosstat_00_80').text(data.rosstat_00_80);
     $('.in_doo_00_80').text(data.in_doo_00_80);
     $('.in_queue_00_80').text(data.in_queue_00_80);

@@ -3,10 +3,15 @@
     <title>Дошкольное образование - Федеральный сегмент</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <script type="text/javascript" src="./jawr/jawr_loader.js" ></script>
     <script>
         JAWR.loader.style('/bundles/public.css');
     </script>
+    <script type="text/javascript" src="../js/menu.js" ></script>
+    <script type="text/javascript" src="../js/main.js" ></script>
+    <script type="text/javascript" src="../js/map.js" ></script>
+
 
     <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800">
 
@@ -47,7 +52,7 @@
     <ul class="main_menu">
         <li class="active">
             <!-- reload carent dataEo from server -->
-            <a href="javascript:void(0)" data-to="map.html">
+            <a href="index_eo_edu_ru_v3.html" data-to="index_eo_edu_ru_v3.html">
             <span>
                 <i class="icon-globe"></i>
                 Показатели
@@ -55,8 +60,7 @@
             </a>
         </li>
         <li>
-            <a href="javascript:void(0)" data-to="proxy.htm?target=service__enrollment.jsp"
-               data-hide-top-nav-panel="true">
+            <a href="javascript:void(0)" data-to="proxy.htm?target=service__enrollment.jsp" data-hide-top-nav-panel="true">
             <span>
                 <i class="icon-edit"></i>
                 Запись в ДОО
@@ -211,10 +215,77 @@
                     </tr>
                     </tbody></table>
             </div>
+            <div>
+                <div class="row row_top_margin index_view_panel">
+                    <div class="col-md-12">
+                        <div id="yamap" class="map_container map_disabled_pointer" style="padding: 0; position: relative;"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="mapRedirectToRegionModal" class="modal fade doo_enrollment_modal" tabindex="-1" role="dialog"
+                 aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title">Запись в ДОО</h4>
+                        </div>
+                        <div class="modal-body" style="font-size: 1.2em; word-wrap: break-word;">
+                            <div>
+                                <label id="mapRedirectToRegionLabel"></label> (<label>количество МО:</label> <label
+                                    id="mapRedirectToRegionMoCountLabel"></label>)
+                            </div>
+                            <span>Адрес получения услуги: </span>
+                            <a id="mapRedirectToRegionLink" target="_blank" href="#"></a>
+                            <span id="mapRedirectToRegionLinkAbsence" style="display: none;">-</span>
+
+                            <div class="mo_selector_container">
+                                <label>МО:</label>
+                                <select id="mapRedirectToRegionMoSelector" class="show-menu-arrow show-tick" data-live-search="true"
+                                        data-width="500px"></select>
+                            </div>
+
+
+                            <!-- MAP #############################################################################-->
+                            <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
+                            <div id="map" style="width: 600px; height: 400px"></div>
+                            <script type="text/javascript">
+                                ymaps.ready(init);
+                                var myMap;
+
+                                function init(){
+                                    myMap = new ymaps.Map("map", {
+                                        center: [55.76, 37.64],
+                                        zoom: 7
+                                    });
+                                }
+                            </script>
+
+
+
+                            <div class="mo_link">
+                                <a id="mapRedirectToRegionLink1" target="_blank" href="#">Ссылка на РПГУ</a>
+                            </div>
+                            <div class="mo_link">
+                                <a id="mapRedirectToRegionLink2" target="_blank" href="#">Ссылка на ЕПГУ</a>
+                            </div>
+                            <div id="mapNoMoLinks" style="display: none;">
+                                Для Вашего региона услуга оказывается в электронном виде через орган местного самоуправления
+                                муниципального района в сфере образования.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+        <div id="service__enrollment" style="display: none;">
+            <!-- Здесь появляется всё что связано с записью в ДО а точнее
+                enrollment.jsp
+            -->
+        </div>
+
     </div>
   </div>
-
 
 
 </body>

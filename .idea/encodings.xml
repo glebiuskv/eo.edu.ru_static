@@ -1,16 +1,2 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="Encoding">
-    <file url="file://$PROJECT_DIR$/fonts" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/img/favicon.ico" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/img/left-horiz-bg.png" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/img/left-vert-bg.png" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/img/lens.png" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/img/loading-24.gif" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/img/select-bg.png" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/img/skin-nav-bullets.png" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/new.js" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/public.css" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/public.js" charset="UTF-8" />
-  </component>
-</project>
+<project version="4" />
