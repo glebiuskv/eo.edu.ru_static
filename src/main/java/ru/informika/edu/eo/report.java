@@ -46,6 +46,7 @@ public class Report extends HttpServlet {
         //
         // http://cabinetv2.do.edu.ru:8080/report.htm?action=getReport&id=cantons
         //
+        resp.setContentType("text/html; charset=UTF-8");
 
         if(req.getParameter("action").equals("getReport")){
             if(req.getParameter("id").equals("cantons")){
@@ -61,27 +62,29 @@ public class Report extends HttpServlet {
     }
 
     public JsonElement getFromResrApi (String parameters){
-        JsonElement result;
-        URL url = null;
+        JsonElement result = null;
 
+        /*URL url = null;
         try {
             url = new URL("http://cabinetv3.do.edu.ru:8081/api/" + parameters);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream().));
             result = new JsonParser().parse(reader);
-            return result;
+
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return result;*/
         //TODO пееписать без использования jsoup
 
 
         Document doc = null;
         Elements sections;
+        String url = "http://cabinetv3.do.edu.ru:8081/api/" + parameters;
 
         try {
-            doc = Jsoup.connect(url + parameters).timeout(3000).ignoreContentType(true).userAgent("Mozilla").get();
+            doc = Jsoup.connect(url).timeout(3000).ignoreContentType(true).userAgent("Mozilla").get();
         } catch (IOException e1) {
             e1.printStackTrace();
         }
@@ -89,7 +92,7 @@ public class Report extends HttpServlet {
         for (Element section:sections){
             result = new JsonParser().parse(section.text());
         }
-        return null;//result;
+        return result;
     }
 
     public JsonObject convertCantons (JsonElement dataIn){
