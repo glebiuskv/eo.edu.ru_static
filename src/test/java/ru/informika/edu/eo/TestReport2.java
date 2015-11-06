@@ -8,7 +8,7 @@ import org.junit.Test;
 /**
  * Created by Андрей on 05.11.2015.
  */
-public class TestReport {
+public class TestReport2 {
     @Test
     public void testGetFromResrApi (){
         Report2 r = new Report2();
@@ -23,6 +23,6 @@ public class TestReport {
         Report2 r = new Report2();
 
         JsonElement dataIn = r.getFromResrApi("frm?mun=0&reg=0&fed=0");
-        System.out.println(r.convertCantons(dataIn));
+        System.out.println(r.cantons(dataIn));
     }
 }
