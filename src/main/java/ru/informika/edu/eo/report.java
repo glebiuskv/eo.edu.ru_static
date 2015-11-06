@@ -18,18 +18,18 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Enumeration;
+import java.util.List;
 
 /**
  * Created by Андрей on 05.11.2015.
  */
 public class Report extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-        //action=getReport&id=cantons
-        // resp = JSON {table:[{0:"4", 1:"ДФО", 2:"canton"}, ...], code:0}
-
-        //action=getReport &id= "report_url_mapping_for_redirect"
+                //action=getReport &id= "report_url_mapping_for_redirect"
         // JSON {table:[0:51490, 1:начальник дошкольного и общего образования Министерства образования Московской области И.В. Морозова 8-498-602-10-41 начальник управления стратегического развития и стандартизации Министерства государственного управления, информационных технологий и связи Московской области Д.Б. Усенков 8-498-602-02-46, 2:http://lk.mosreg.ru/lkmo/dou_main.htm}], code:0}
 
         // map_russia_structure
@@ -47,12 +47,22 @@ public class Report extends HttpServlet {
         // http://cabinetv2.do.edu.ru:8080/report.htm?action=getReport&id=cantons
         //
         resp.setContentType("text/html; charset=UTF-8");
-
+        if (req.getParameter("action")!=null)
         if(req.getParameter("action").equals("getReport")){
             if(req.getParameter("id").equals("cantons")){
                 resp.getWriter().println(convertCantons(getFromResrApi("frm?mun=0&reg=0&fed=0")).toString());
             }
         }else{
+            resp.getWriter().println("Not support yet.");
+        }
+
+        if(req.getParameter("target")!= null)
+        if(req.getParameter("target").equals("charts__map.jsp")){
+            List<String> lines = Files.readAllLines(Paths.get("map.jsp"), StandardCharsets.UTF_8);
+            for(String line:lines){
+                System.out.println (line);
+                resp.getWriter().println(line);
+            }
             resp.getWriter().println("Not support yet.");
         }
 
@@ -77,6 +87,7 @@ public class Report extends HttpServlet {
         }
         return result;*/
         //TODO пееписать без использования jsoup
+        //
 
 
         Document doc = null;
@@ -113,4 +124,5 @@ public class Report extends HttpServlet {
         result.addProperty("code",0);
         return result;
     }
+
 }
