@@ -27,7 +27,7 @@ import java.util.List;
 /**
  * Created by Андрей on 05.11.2015.
  */
-public class Report extends HttpServlet {
+public class Report2 extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
                 //action=getReport &id= "report_url_mapping_for_redirect"
         // JSON {table:[0:51490, 1:начальник дошкольного и общего образования Министерства образования Московской области И.В. Морозова 8-498-602-10-41 начальник управления стратегического развития и стандартизации Министерства государственного управления, информационных технологий и связи Московской области Д.Б. Усенков 8-498-602-02-46, 2:http://lk.mosreg.ru/lkmo/dou_main.htm}], code:0}
@@ -58,7 +58,7 @@ public class Report extends HttpServlet {
 
         if(req.getParameter("target")!= null)
         if(req.getParameter("target").equals("charts__map.jsp")){
-            List<String> lines = Files.readAllLines(Paths.get("map.jsp"), StandardCharsets.UTF_8);
+            List<String> lines = Files.readAllLines(Paths.get("map.src"), StandardCharsets.UTF_8);
             for(String line:lines){
                 System.out.println (line);
                 resp.getWriter().println(line);
@@ -86,7 +86,7 @@ public class Report extends HttpServlet {
             e.printStackTrace();
         }
         return result;*/
-        //TODO пееписать без использования jsoup
+        //пееписать без использования jsoup
         //
 
 

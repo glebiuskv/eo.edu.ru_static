@@ -64,7 +64,7 @@
 
     <servlet>
         <servlet-name>report</servlet-name>
-        <servlet-class>ru.informika.edu.eo.Report</servlet-class>
+        <servlet-class>ru.informika.edu.eo.Report2</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>report</servlet-name>
