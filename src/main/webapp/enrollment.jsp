@@ -1,4 +1,3 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <div class="row header_row">
     <h3>Запись в ДОО</h3>
 </div>

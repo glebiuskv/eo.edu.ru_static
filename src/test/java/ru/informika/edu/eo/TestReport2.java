@@ -25,4 +25,10 @@ public class TestReport2 {
         JsonElement dataIn = r.getFromResrApi("frm?mun=0&reg=0&fed=0");
         System.out.println(r.cantons(dataIn));
     }
+
+    @Test
+    public void testGetData(){
+        Report2 r = new Report2();
+        System.out.println(r.getData("in_doo_00_80", "201510","0","0","0"));
+    }
 }
