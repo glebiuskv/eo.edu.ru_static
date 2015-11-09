@@ -33,10 +33,18 @@ public class Report2 extends HttpServlet {
                     resp.getWriter().println(cantons(getFromResrApi("frm?mun=0&reg=0&fed=0")).toString());
                     break;
                 case "map_russia_structure":
-                    resp.getWriter().println();
+                    resp.getWriter().println(mapRussiaStructure());
                     break;
+                case "report_url_mapping_for_redirect":
+                    resp.getWriter().println(urlMappingForRedirect());
+                    break;
+                case "top_child_all_for_year_month":
+                    resp.getWriter().println("{'table':[['11111']],'code':0}");
+                    break;
+                case "top_child_3_7_for_year_month":
+                    resp.getWriter().println("{ 'table': [ [ '22222' ] ], 'code': 0 }");
                 default:
-                    resp.getWriter().println("Not support yet.");
+                    //resp.getWriter().println("Not support yet.");
                     break;
             }}
             /*if(req.getParameter("id").equals("cantons")){
@@ -48,11 +56,6 @@ public class Report2 extends HttpServlet {
 
         if(req.getParameter("target")!= null)
         if(req.getParameter("target").equals("charts__map.jsp")){
-            //System.out.println(getServletContext().getContextPath());
-
-                //URI uri = Report2.class.getResource("map.jsp").toURI();
-                //Path path = Paths.get(uri);
-
             // очень не правильное решение!!!
             List<String> lines = Files.readAllLines(Paths.get("d:\\apache-tomcat-7.0.65\\webapps\\ROOT\\map.jsp"), StandardCharsets.UTF_8);
                 for(String line:lines){
@@ -67,23 +70,6 @@ public class Report2 extends HttpServlet {
 
     public JsonElement getFromResrApi (String parameters){
         JsonElement result = null;
-
-        /*URL url = null;
-        try {
-            url = new URL("http://cabinetv3.do.edu.ru:8081/api/" + parameters);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream().));
-            result = new JsonParser().parse(reader);
-
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return result;*/
-        //пееписать без использования jsoup
-        //
-
-
         Document doc = null;
         Elements sections;
         String url = "http://cabinetv3.do.edu.ru:8081/api/" + parameters;
@@ -119,25 +105,42 @@ public class Report2 extends HttpServlet {
         return result;
     }
 
-    public JsonObject mapRussiaStructure (JsonElement dataIn){
-        JsonObject result = new JsonObject();
-        JsonArray states = new JsonArray();
+    public String mapRussiaStructure (){
+        String result = null;
+        Document doc = null;
+        Elements sections;
+        String url = "http://cabinetv2.do.edu.ru:8080/report.htm?action=getReport&id=map_russia_structure";
 
-        JsonObject jobj = cantons(dataIn);
-        JsonArray cantons = jobj.get("table").getAsJsonArray();
-
-        for(JsonElement jelm:dataIn.getAsJsonArray()) {
-            JsonObject fed = jelm.getAsJsonObject();
-            if (fed.get("reg").getAsInt()!=0){
-                JsonArray state = new JsonArray();
-                state.add(fed.get("fed").getAsString());
-                state.add(fed.get("shortname").getAsString());
-                state.add(fed.get("fullname").getAsString());
-                state.add(fed.get(""));
-            }
+        try {
+            doc = Jsoup.connect(url).timeout(3000).ignoreContentType(true).userAgent("Mozilla").get();
+        } catch (IOException e1) {
+            e1.printStackTrace();
         }
-
+        sections = doc.getElementsByTag("body");
+        for (Element section:sections){
+            result = section.text();
+        }
         return result;
     }
+
+    public String urlMappingForRedirect (){
+        String result = null;
+        Document doc = null;
+        Elements sections;
+        String url = "http://cabinetv2.do.edu.ru:8080/report.htm?action=getReport&id=report_url_mapping_for_redirect";
+
+        try {
+            doc = Jsoup.connect(url).timeout(3000).ignoreContentType(true).userAgent("Mozilla").get();
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+        sections = doc.getElementsByTag("body");
+        for (Element section:sections){
+            result = section.text();
+        }
+        return result;
+    }
+
+    public
 
 }
