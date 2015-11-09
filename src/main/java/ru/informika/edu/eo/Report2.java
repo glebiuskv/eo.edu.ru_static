@@ -19,6 +19,7 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by Андрей on 05.11.2015.
@@ -29,22 +30,26 @@ public class Report2 extends HttpServlet {
         resp.setContentType("text/html; charset=UTF-8");
 
         if (req.getParameter("action") != null)
+            if (req.getParameter("action").equals("getReport"))
+                if (req.getParameter("year") != null & req.getParameter("canton_id") !=null) {
+                    String id = req.getParameter("id");
+                    String ym = req.getParameter("year") + req.getParameter("month");
+                    String fed = req.getParameter("canton_id");
+                    String reg = req.getParameter("state_id");
+                    String mun = req.getParameter("municipality_id");
+                    resp.getWriter().println(getData(id, ym, fed, reg, mun));
+                }else{
+                    resp.getWriter().println(redirect("report.htm?"+req.getQueryString()));
+                }
+        /*if (req.getParameter("action") != null)
             if (req.getParameter("action").equals("getReport")) {
                 switch (req.getParameter("id")) {
-                    case "cantons":
-                        resp.getWriter().println(cantons(getFromResrApi("frm?mun=0&reg=0&fed=0")).toString());
-                        break;
-                    case "map_russia_structure":
-                        resp.getWriter().println(mapRussiaStructure());
-                        break;
-                    case "report_url_mapping_for_redirect":
-                        resp.getWriter().println(urlMappingForRedirect());
-                        break;
+
                     default:
-                        //resp.getWriter().println("Not support yet.");
+                        resp.getWriter().println(redirect("report.htm?"+req.getQueryString()));
                         break;
                 }
-                if (req.getParameter("year") != null) {
+                if (req.getParameter("year") != null & req.getParameter("canton_id") !=null) {
                     String ym = req.getParameter("year") + req.getParameter("month");
                     String fed, reg, mun;
                     Map<String, String> map = new HashMap<>();
@@ -86,7 +91,7 @@ public class Report2 extends HttpServlet {
                     System.out.println();
                     resp.getWriter().println(getData(map.get(req.getParameter("id")), ym, fed, reg, mun));
                 }
-            }
+            }*/
 
         if (req.getParameter("target") != null) {
             String url = null;
@@ -144,11 +149,11 @@ public class Report2 extends HttpServlet {
         return result;
     }
 
-    public String mapRussiaStructure() {
+    public String redirect (String param){
         String result = null;
         Document doc = null;
         Elements sections;
-        String url = "http://cabinetv2.do.edu.ru:8080/report.htm?action=getReport&id=map_russia_structure";
+        String url = "http://cabinetv2.do.edu.ru:8080/" + param;
 
         try {
             doc = Jsoup.connect(url).timeout(3000).ignoreContentType(true).userAgent("Mozilla").get();
@@ -162,30 +167,42 @@ public class Report2 extends HttpServlet {
         return result;
     }
 
-    public String urlMappingForRedirect() {
+    public String getData(String id, String ym, String fed, String reg, String mun) {
         String result = null;
-        Document doc = null;
-        Elements sections;
-        String url = "http://cabinetv2.do.edu.ru:8080/report.htm?action=getReport&id=report_url_mapping_for_redirect";
 
-        try {
-            doc = Jsoup.connect(url).timeout(3000).ignoreContentType(true).userAgent("Mozilla").get();
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }
-        sections = doc.getElementsByTag("body");
-        for (Element section : sections) {
-            result = section.text();
-        }
-        return result;
-    }
+        Map<String, String> map = new HashMap<>();
+        map.put("top_child_all_for_year_month", "rosstat_00_80");
+        map.put("top_child_in_org_all_additional_for_year_month", "in_doo_00_80");
+        map.put("top_child_in_queue_wo_place_additional_for_year_month", "in_queue_00_80");
+        map.put("top_child_in_queue_all_additional_for_year_month", "wo_place_00_80");
 
-    public String getData(String param, String ym, String fed, String reg, String mun) {
-        String result = null;
+        map.put("top_child_0_7_for_year_month", "rosstat_00_70");
+        map.put("top_child_in_org_0_7_additional_for_year_month", "in_doo_00_70");
+        map.put("top_child_in_queue_wo_place_0_7_additional_for_year_month", "in_queue_00_70");
+        map.put("top_child_in_queue_0_7_additional_for_year_month", "wo_place_00_70");
+
+        map.put("top_child_3_7_for_year_month", "rosstat_30_70");
+        map.put("top_child_in_org_3_7_additional_for_year_month", "in_doo_30_70");
+        map.put("top_child_in_queue_wo_place_3_7_additional_for_year_month", "in_queue_30_70");
+        map.put("top_child_in_queue_3_7_additional_for_year_month", "wo_place_30_70");
+
+        map.put("top_child_0_3_for_year_month", "rosstat_00_30");
+        map.put("top_child_in_org_0_3_additional_for_year_month", "in_doo_00_30");
+        map.put("top_child_in_queue_wo_place_0_3_additional_for_year_month", "in_queue_00_30");
+        map.put("top_child_in_queue_0_3_additional_for_year_month", "wo_place_00_30");
+
+        Set <String> keys = map.keySet();
+        for(String key:keys){
+        System.out.println(key);}
+
+        if (fed.equals("-1"))   fed = "0";
+        if (reg.equals("-1"))   reg = "0";
+        if (mun.equals("-1"))   mun = "0";
+
         String url = "header?ym=" + ym + "&fed=" + fed + "&reg=" + reg + "&mun=" + mun;
         JsonElement jelm = getFromResrApi(url);
         JsonObject dataIn = jelm.getAsJsonObject();
-        result = dataIn.get(param).getAsString();
+        result = dataIn.get("").getAsString();
 
         JsonArray numChildren = new JsonArray();
         numChildren.add(result);

@@ -25,7 +25,8 @@ var MapRegions = function () {
             $.ajax({
                 type: 'GET',
                 dataType: 'json',
-                url: 'report.htm',
+                //url: 'report.htm',
+                url: 'json/mapRussiaStructure.json',
                 data: {
                     action: 'getReport',
                     id: 'map_russia_structure'

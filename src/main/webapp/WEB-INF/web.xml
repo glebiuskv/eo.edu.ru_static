@@ -8,7 +8,7 @@
         <!--!!!Отработает Spring MVC на HomeController!!!-->
         <!--<welcome-file>site.htm</welcome-file>-->
         <!--<welcome-file>home.htm</welcome-file>-->
-        <welcome-file>index.html</welcome-file>
+        <welcome-file>map.html</welcome-file>
     </welcome-file-list>
     <error-page>
         <error-code>404</error-code>
