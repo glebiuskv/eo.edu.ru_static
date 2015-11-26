@@ -2,7 +2,6 @@
 <project version="4">
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/src/main/java/ru/informika/edu/eo/Report2.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/main/webapp/js/new_map.js" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/webapp/json/indexValuesForMap.json" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/webapp/json/mapRussiaStructure.json" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/test/java/ru/informika/edu/eo/TestReport2.java" charset="UTF-8" />
