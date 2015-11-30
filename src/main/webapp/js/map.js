@@ -10,10 +10,23 @@ var MAP_CONTEXT = function () {
 
     this.initMap = function () {
 
+
+        ref.mapContainer = $('#yamap');
+        ref.setLegendMark = legend.draw({
+            containerSelector: '#yamap',
+            minValue: ref.minRegionValue,
+            maxValue: ref.maxRegionValue,
+            title: '',
+            isQuality: false,
+            isInverted: false
+        });
+
+
+
         map = new Map({
             containerId: 'yamap',
             viewMargin: [5, 5, 40, 5],
-            onClick: window.MAP_CONTEXT.onMapClick
+            onClick: window.EOCONTEXT.MAP_CONTEXT.onMapClick
             ,
             onReady: function () {
                 window.EOCONTEXT.MAP_CONTEXT.loadIndexValuesForMap();
@@ -29,8 +42,8 @@ var MAP_CONTEXT = function () {
             }
         });
 
-        window.MAP_CONTEXT.mapContainer.show();
-        waiter.start(window.MAP_CONTEXT.mapContainer);
+        window.EOCONTEXT.MAP_CONTEXT.mapContainer.show();
+        waiter.start(window.EOCONTEXT.MAP_CONTEXT.mapContainer);
     };
     this.mapRegionsData = {};
     this.additionalRegionsData = {};
@@ -41,7 +54,7 @@ var MAP_CONTEXT = function () {
     $(document).ready(function () {
         // Object with values of main index for all regions (keys = osmId of regions)
         // mapRegionsData[osmId] = { value: float, hint: '', color: '' }
-        ref.mapContainer = $('#yamap');
+
         ref.mapRedirectToRegionModal = $('#mapRedirectToRegionModal');
         ref.mapRedirectToRegionLabel = $('#mapRedirectToRegionLabel');
         ref.mapRedirectToRegionMoCountLabel = $('#mapRedirectToRegionMoCountLabel');
@@ -52,14 +65,7 @@ var MAP_CONTEXT = function () {
         ref.mapRedirectToRegionLink2 = $('#mapRedirectToRegionLink2');
         ref.mapNoMoLinks = $('#mapNoMoLinks');
         ref.modalContent = $('.modal-content', ref.mapRedirectToRegionModal);
-        ref.setLegendMark = legend.draw({
-            containerSelector: '#yamap',
-            minValue: ref.minRegionValue,
-            maxValue: ref.maxRegionValue,
-            title: '',
-            isQuality: false,
-            isInverted: false
-        });
+
     });
 
     this.onMapClick = function (federalDistrictId, regionId) {
@@ -69,10 +75,13 @@ var MAP_CONTEXT = function () {
         // меняем значение фильтров согласно накликанному по карте
         filterData.canton = federalDistrictId;
         filterData.state = regionId;
+        window.EOCONTEXT.PLASHKA.fed = federalDistrictId;
+        window.EOCONTEXT.PLASHKA.reg = regionId;
 
         ref.loadIndexValuesForMap();
+        window.EOCONTEXT.PLASHKA.refresh();
 
-        if (cookieCurrentFed === "0") {
+        /*if (window.EOCONTEXT.PLASHKA.fed === "0") {
             regionId = "0";
         }
         if (regionId !== "0") {
@@ -89,31 +98,24 @@ var MAP_CONTEXT = function () {
             $('#select__cantons').val(sel);
             $('#select__cantons').change();
         }
-        //}
 
         ref.triggerMapChanged(filterData);
-        ref.changeMapView(filterData);
-
-        /*if (filterData.state > -1) {
-         showRedirectPopup(filterData.state);
-         }
-         else {
-         triggerMapChanged(filterData);
-         changeMapView(filterData);
-         }*/
+        ref.changeMapView(filterData);*/
     };
 
     this.loadIndexValuesForMap = function () {
-        var params = {};
-        if (!!window.EOCONTEXT && !!window.EOCONTEXT.INDICATORS) {
-            params = window.EOCONTEXT.INDICATORS.collectRequestParameters();
-        }
-        $.ajax({
-            url: '/map/api/getData',
-            dataType: 'json',
-            type: 'GET',
-            data: params,
-            success: function (data) {
+        //var params = {};
+        //if (!!window.EOCONTEXT && !!window.EOCONTEXT.INDICATORS) {
+          //  params = window.EOCONTEXT.INDICATORS.collectRequestParameters();
+        //}
+        //$.ajax({
+          //  url: '/map/api/getData',
+            //dataType: 'json',
+            //type: 'GET',
+            //data: params,
+            //success: function (data) {
+        var url = "http://cabinet.do.edu.ru/map/api/getMapStructure";
+            $.getJSON(url, function (data) {
                 if (common.checkJson(data)) {
                     var table = data.table,
                         i,
@@ -178,7 +180,7 @@ var MAP_CONTEXT = function () {
                     }
                     ref.applyDataToMap();
                 }
-            }
+            //}
         });
     };
 
@@ -217,9 +219,9 @@ var MAP_CONTEXT = function () {
     };
 
     this.getFilter = function () {
-        var c_val = cookieCurrentFed;
-        var s_val = cookieCurrentReg;
-        var m_val = cookieCurrentReg;
+        var c_val = window.EOCONTEXT.PLASHKA.fed;
+        var s_val = window.EOCONTEXT.PLASHKA.reg;
+        var m_val = window.EOCONTEXT.PLASHKA.mun;
         return {
             canton: c_val,
             state: s_val,

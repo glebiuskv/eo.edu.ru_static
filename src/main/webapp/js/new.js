@@ -22,11 +22,14 @@ var PLASHKA = function () {
     this.ym = y + m;
     this.fed = 0;
     this.reg = 0;
+    this.mun = 0;
 
 
 
     this.main_selector = function(form){
         ref.fed = form.value;
+
+        window.EOCONTEXT.MAP_CONTEXT.onMapClick(ref.fed, ref.reg);
 
         if (ref.fed != 0) {
             // запрашиваем список субъектов федерации по номеру ФО из рест апи
@@ -42,6 +45,7 @@ var PLASHKA = function () {
 
     this.slave_selector = function(form){
         ref.reg = form.value;
+        window.EOCONTEXT.MAP_CONTEXT.onMapClick(ref.fed, ref.reg);
         ref.getData();
 
     };
@@ -95,5 +99,17 @@ var PLASHKA = function () {
                 }
             });
         });
+    }
+
+    this.refresh = function(){
+
+
+        // перерисоваваем селекторы
+
+        // перерисовываем таблицу
+
+        // перерисовываем карту
+        ref.triggerMapChanged(filterData);
+        ref.changeMapView(filterData);
     }
 };
