@@ -1,79 +1,99 @@
-/**
- * Created by Андрей on 30.10.2015.
- */
-
-var ym = '201510';
-var fed = 0;
-var reg = 0;
-
 $(document).ready(function () {
-    getData(ym, fed, reg);
+    if (!window.EOCONTEXT){
+        window.EOCONTEXT = {};
+    }
+    if (!!window.EOCONTEXT && !window.EOCONTEXT.MAP_CONTEXT) {
+        window.EOCONTEXT.MAP_CONTEXT = new MAP_CONTEXT();
+    }
+    if (!!window.EOCONTEXT && !window.EOCONTEXT.PLASHKA) {
+        window.EOCONTEXT.PLASHKA = new PLASHKA();
+    }
+
+    $('.selectpicker').selectpicker({style: 'btn-xs btn-xm'});
+    window.EOCONTEXT.PLASHKA.getData();
+    window.EOCONTEXT.MAP_CONTEXT.initMap();
 });
 
-function main_selector(form) {
-    fed = form.value;
+var PLASHKA = function () {
 
-    if (fed != 0) {
-        // запрашиваем список субъектов федерации по номеру ФО из рест апи
-        getReg(fed);
-    }else{
-        $('#select__states').empty();
-        $('#select__states').append('<option value="0">Все регионы</option>');
-    }
-    reg = 0;
-    getData(ym, fed, reg);
-}
+    var ref = this;
+    var y = new Date().getFullYear().toString();
+    var m = new Date().getMonth() + 1;
+    this.ym = y + m;
+    this.fed = 0;
+    this.reg = 0;
 
-function slave_selector(form) {
-    reg = form.value;
-    getData(ym, fed, reg);
 
-}
 
-function fill_table(data) {
+    this.main_selector = function(form){
+        ref.fed = form.value;
 
-    $('.rosstat_00_80').text(data.rosstat_00_80);
-    $('.in_doo_00_80').text(data.in_doo_00_80);
-    $('.in_queue_00_80').text(data.in_queue_00_80);
-    $('.wo_place_00_80').text(data.wo_place_00_80);
+        if (ref.fed != 0) {
+            // запрашиваем список субъектов федерации по номеру ФО из рест апи
+            ref.getReg();
+        } else {
+            $('#select__states').empty();
+            $('#select__states').append('<option value="0">Все регионы</option>');
+        }
+        ref.reg = 0;
+        ref.getData();
+        $('#select__states').selectpicker('refresh');
+    };
 
-    $('.rosstat_00_70').text(data.rosstat_00_70);
-    $('.in_doo_00_70').text(data.in_doo_00_70);
-    $('.in_queue_00_70').text(data.in_queue_00_70);
-    $('.wo_place_00_70').text(data.wo_place_00_70);
+    this.slave_selector = function(form){
+        ref.reg = form.value;
+        ref.getData();
 
-    $('.rosstat_30_70').text(data.rosstat_30_70);
-    $('.in_doo_30_70').text(data.in_doo_30_70);
-    $('.in_queue_30_70').text(data.in_queue_30_70);
-    $('.wo_place_30_70').text(data.wo_place_30_70);
+    };
 
-    $('.rosstat_00_30').text(data.rosstat_00_30);
-    $('.in_doo_00_30').text(data.in_doo_00_30);
-    $('.in_queue_00_30').text(data.in_queue_00_30);
-    $('.wo_place_00_30').text(data.wo_place_00_30);
-}
+    this.fill_table = function(data){
 
-function getData(ym, fed1, reg) {
-    var url = "http://cabinetv3.do.edu.ru:8081/api/header?ym=" + ym + "&fed=" + fed1 + "&reg=" + reg + "&mun=0";
-    $.getJSON(url, function (resp) {
-        fill_table(resp);
-    });
-}
+        $('.rosstat_00_80').text(accounting.formatNumber(data.rosstat_00_80), 0, " ");
+        $('.in_doo_00_80').text(accounting.formatNumber(data.in_doo_00_80), 0, " ");
+        $('.in_queue_00_80').text(accounting.formatNumber(data.in_queue_00_80), 0, " ");
+        $('.wo_place_00_80').text(accounting.formatNumber(data.wo_place_00_80), 0, " ");
 
-function getReg(fed){
-    var url = "http://cabinetv3.do.edu.ru:8081/api/frm?mun=0&reg=0&fed=0";
-    var carenFed;
-    var selectReg = $('#select__states');
-    selectReg.empty();
-    $.getJSON(url, function(data){
-        data.forEach(function(item){
+        $('.rosstat_00_70').text(accounting.formatNumber(data.rosstat_00_70), 0, " ");
+        $('.in_doo_00_70').text(accounting.formatNumber(data.in_doo_00_70), 0, " ");
+        $('.in_queue_00_70').text(accounting.formatNumber(data.in_queue_00_70), 0, " ");
+        $('.wo_place_00_70').text(accounting.formatNumber(data.wo_place_00_70), 0, " ");
 
-            if (item.fed == fed){
-                var reg = item.reg;
-                var name = item.shortname;
-                if (reg == 0){name = "Все регионы"}
-                selectReg.append('<option value="' + reg + '">' + name + '</option>');
-            }
+        $('.rosstat_30_70').text(accounting.formatNumber(data.rosstat_30_70), 0, " ");
+        $('.in_doo_30_70').text(accounting.formatNumber(data.in_doo_30_70), 0, " ");
+        $('.in_queue_30_70').text(accounting.formatNumber(data.in_queue_30_70), 0, " ");
+        $('.wo_place_30_70').text(accounting.formatNumber(data.wo_place_30_70), 0, " ");
+
+        $('.rosstat_00_30').text(accounting.formatNumber(data.rosstat_00_30), 0, " ");
+        $('.in_doo_00_30').text(accounting.formatNumber(data.in_doo_00_30), 0, " ");
+        $('.in_queue_00_30').text(accounting.formatNumber(data.in_queue_00_30), 0, " ");
+        $('.wo_place_00_30').text(accounting.formatNumber(data.wo_place_00_30), 0, " ");
+    };
+
+    this.getData = function() {
+        var url = "http://cabinetv3.do.edu.ru:8081/api/header?ym=" + ref.ym + "&fed=" + ref.fed + "&reg=" + ref.reg + "&mun=0";
+        $.getJSON(url, function (resp) {
+            ref.fill_table(resp);
         });
-    });
-}
+    };
+
+    this.getReg = function(){
+        var url = "http://cabinetv3.do.edu.ru:8081/api/frm?mun=0&reg=0&fed=0";
+        var selectReg = $('#select__states');
+        selectReg.empty();
+        selectReg.selectpicker('refresh');
+        $.getJSON(url, function (data) {
+            data.forEach(function (item) {
+
+                if (item.fed == ref.fed) {
+                    var reg = item.reg;
+                    var name = item.shortname;
+                    if (reg == 0) {
+                        name = "Все регионы"
+                    }
+                    selectReg.append('<option value="' + reg + '">' + name + '</option>');
+                    selectReg.selectpicker('refresh');
+                }
+            });
+        });
+    }
+};
