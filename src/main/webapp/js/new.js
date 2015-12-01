@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    if (!window.EOCONTEXT){
+    if (!window.EOCONTEXT.filterData){
         window.EOCONTEXT = new EOCONTEXT();
         window.EOCONTEXT.filterData = window.EOCONTEXT.getFilter();
     }
@@ -11,8 +11,9 @@ $(document).ready(function () {
     }
 
     $('.selectpicker').selectpicker({style: 'btn-xs btn-xm'});
-    window.EOCONTEXT.PLASHKA.paintTable();
+    //window.EOCONTEXT.PLASHKA.paintTable(window.EOCONTEXT.filterData);
     window.EOCONTEXT.MAP_CONTEXT.initMap();
+    window.EOCONTEXT.PLASHKA.refresh(window.EOCONTEXT.filterData);
 });
 
 var EOCONTEXT = function (){
@@ -37,13 +38,13 @@ var PLASHKA = function () {
 
 
     this.main_selector = function(form){
-        EOCONTEXT.filterData.canton = form.value;
-        EOCONTEXT.PLASHKA.refresh(EOCONTEXT.filterData);
+        window.EOCONTEXT.filterData.canton = form.value;
+        window.EOCONTEXT.PLASHKA.refresh(window.EOCONTEXT.filterData);
     };
 
     this.slave_selector = function(form){
-        EOCONTEXT.filterData.state = form.value;
-        EOCONTEXT.PLASHKA.refresh(EOCONTEXT.filterData);
+        window.EOCONTEXT.filterData.state = form.value;
+        window.EOCONTEXT.PLASHKA.refresh(window.EOCONTEXT.filterData);
     };
 
     this.fill_table = function(data){
@@ -108,13 +109,12 @@ var PLASHKA = function () {
         } else {
             ref.getReg(filterData);
         }
-        //filterData.state = 0;
 
         // перерисовываем таблицу
         ref.paintTable(filterData);
 
         // перерисовываем карту
-        ref.triggerMapChanged(filterData);
-        ref.changeMapView(filterData);
+        window.EOCONTEXT.MAP_CONTEXT.triggerMapChanged(filterData);
+        window.EOCONTEXT.MAP_CONTEXT.changeMapView(filterData);
     }
 };

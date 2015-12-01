@@ -101,16 +101,7 @@ var MAP_CONTEXT = function () {
     };
 
     this.loadIndexValuesForMap = function () {
-        //var params = {};
-        //if (!!window.EOCONTEXT && !!window.EOCONTEXT.INDICATORS) {
-          //  params = window.EOCONTEXT.INDICATORS.collectRequestParameters();
-        //}
-        //$.ajax({
-          //  url: '/map/api/paintTable',
-            //dataType: 'json',
-            //type: 'GET',
-            //data: params,
-            //success: function (data) {
+
         var url = "http://cabinet.do.edu.ru/map/api/getMapStructure";
             $.getJSON(url, function (data) {
                 if (common.checkJson(data)) {
@@ -215,7 +206,8 @@ var MAP_CONTEXT = function () {
         return hint.join('');
     };
 
-    this.getFilter = function () {
+    this.getFilter = window.EOCONTEXT.filterData;
+    /*this.getFilter = function () {
         var c_val = window.EOCONTEXT.PLASHKA.fed;
         var s_val = window.EOCONTEXT.PLASHKA.reg;
         var m_val = window.EOCONTEXT.PLASHKA.mun;
@@ -224,7 +216,7 @@ var MAP_CONTEXT = function () {
             state: s_val,
             municipality: m_val
         };
-    };
+    };*/
 
     this.changeMapView = function (filterData) {
         if (map !== undefined) {
@@ -289,7 +281,7 @@ var MAP_CONTEXT = function () {
         waiter.stop(ref.mapContainer);
     };
 
-    this.checkIsMapAvailable = function () {
+    /*this.checkIsMapAvailable = function () {
         var $mapTogle = $('#map-togle');
         var isMapAvailable = cookieCurrentReg === "0";
 
@@ -301,14 +293,14 @@ var MAP_CONTEXT = function () {
             $mapTogle.attr('disabled','disabled');
         }
         $mapTogle.change();
-    }
+    }*/
 };
 
 
-if (!!window.EOCONTEXT && !window.EOCONTEXT.MAP_CONTEXT) {
+/*if (!!window.EOCONTEXT && !window.EOCONTEXT.MAP_CONTEXT) {
     window.EOCONTEXT.MAP_CONTEXT = new MAP_CONTEXT();
     window.EOCONTEXT.subscribe(window.EOCONTEXT.EVENT.onFRMChange, window.EOCONTEXT.MAP_CONTEXT.checkIsMapAvailable);
-}
+}*/
 
 // -= end of new =-
 var MapRegions = function () {
@@ -333,11 +325,13 @@ var MapRegions = function () {
         }
 
         function _getFederalDistrictsStructure() {
-            $.ajax({
+            /*$.ajax({
                 type: 'GET',
                 dataType: 'json',
                 url: 'http://cabinet.do.edu.ru/map/api/getMapStructure',
-                success: function (data) {
+                success: function (data) {*/
+                    var url = "http://cabinet.do.edu.ru/map/api/getMapStructure";
+                    $.getJSON(url, function (data) {
                     if (common.checkJson(data)) {
                         var regionTable = data.table,
                             i,
@@ -377,7 +371,7 @@ var MapRegions = function () {
                         initialized = true;
                         _processExternalRequest();
                     }
-                }
+                //}
             });
         }
 
