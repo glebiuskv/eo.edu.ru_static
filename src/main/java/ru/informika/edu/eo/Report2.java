@@ -89,7 +89,7 @@ public class Report2 extends HttpServlet {
                         mun = req.getParameter("municipality_id");
                     }
                     System.out.println();
-                    resp.getWriter().println(getData(map.get(req.getParameter("id")), ym, fed, reg, mun));
+                    resp.getWriter().println(paintTable(map.get(req.getParameter("id")), ym, fed, reg, mun));
                 }
             }*/
 

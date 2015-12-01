@@ -10,7 +10,6 @@ var MAP_CONTEXT = function () {
 
     this.initMap = function () {
 
-
         ref.mapContainer = $('#yamap');
         ref.setLegendMark = legend.draw({
             containerSelector: '#yamap',
@@ -21,8 +20,6 @@ var MAP_CONTEXT = function () {
             isInverted: false
         });
 
-
-
         map = new Map({
             containerId: 'yamap',
             viewMargin: [5, 5, 40, 5],
@@ -30,7 +27,7 @@ var MAP_CONTEXT = function () {
             ,
             onReady: function () {
                 window.EOCONTEXT.MAP_CONTEXT.loadIndexValuesForMap();
-                window.EOCONTEXT.MAP_CONTEXT.changeMapView(window.EOCONTEXT.MAP_CONTEXT.getFilter());
+                window.EOCONTEXT.MAP_CONTEXT.changeMapView(window.EOCONTEXT.filterData);
             },
             onChanged: function () {
                 waiter.stop(window.EOCONTEXT.MAP_CONTEXT.mapContainer);
@@ -69,14 +66,14 @@ var MAP_CONTEXT = function () {
     });
 
     this.onMapClick = function (federalDistrictId, regionId) {
-        var filterData = ref.getFilter();
+        var filterData = window.EOCONTEXT.filterData;
         regionId = regionId || filterData.state;
 
         // меняем значение фильтров согласно накликанному по карте
         filterData.canton = federalDistrictId;
         filterData.state = regionId;
-        window.EOCONTEXT.PLASHKA.fed = federalDistrictId;
-        window.EOCONTEXT.PLASHKA.reg = regionId;
+        //window.EOCONTEXT.PLASHKA.fed = federalDistrictId;
+        //window.EOCONTEXT.PLASHKA.reg = regionId;
 
         ref.loadIndexValuesForMap();
         window.EOCONTEXT.PLASHKA.refresh();
@@ -109,7 +106,7 @@ var MAP_CONTEXT = function () {
           //  params = window.EOCONTEXT.INDICATORS.collectRequestParameters();
         //}
         //$.ajax({
-          //  url: '/map/api/getData',
+          //  url: '/map/api/paintTable',
             //dataType: 'json',
             //type: 'GET',
             //data: params,

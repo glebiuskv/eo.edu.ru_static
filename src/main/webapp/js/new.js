@@ -1,6 +1,7 @@
 $(document).ready(function () {
     if (!window.EOCONTEXT){
-        window.EOCONTEXT = {};
+        window.EOCONTEXT = new EOCONTEXT();
+        window.EOCONTEXT.filterData = window.EOCONTEXT.getFilter();
     }
     if (!!window.EOCONTEXT && !window.EOCONTEXT.MAP_CONTEXT) {
         window.EOCONTEXT.MAP_CONTEXT = new MAP_CONTEXT();
@@ -10,9 +11,22 @@ $(document).ready(function () {
     }
 
     $('.selectpicker').selectpicker({style: 'btn-xs btn-xm'});
-    window.EOCONTEXT.PLASHKA.getData();
+    window.EOCONTEXT.PLASHKA.paintTable();
     window.EOCONTEXT.MAP_CONTEXT.initMap();
 });
+
+var EOCONTEXT = function (){
+    this.getFilter = function () {
+        var c_val = 0;
+        var s_val = 0;
+        var m_val = 0;
+        return {
+            canton: c_val,
+            state: s_val,
+            municipality: m_val
+        };
+    };
+};
 
 var PLASHKA = function () {
 
@@ -20,34 +34,16 @@ var PLASHKA = function () {
     var y = new Date().getFullYear().toString();
     var m = new Date().getMonth() + 1;
     this.ym = y + m;
-    this.fed = 0;
-    this.reg = 0;
-    this.mun = 0;
-
 
 
     this.main_selector = function(form){
-        ref.fed = form.value;
-
-        window.EOCONTEXT.MAP_CONTEXT.onMapClick(ref.fed, ref.reg);
-
-        if (ref.fed != 0) {
-            // запрашиваем список субъектов федерации по номеру ФО из рест апи
-            ref.getReg();
-        } else {
-            $('#select__states').empty();
-            $('#select__states').append('<option value="0">Все регионы</option>');
-        }
-        ref.reg = 0;
-        ref.getData();
-        $('#select__states').selectpicker('refresh');
+        EOCONTEXT.filterData.canton = form.value;
+        EOCONTEXT.PLASHKA.refresh(EOCONTEXT.filterData);
     };
 
     this.slave_selector = function(form){
-        ref.reg = form.value;
-        window.EOCONTEXT.MAP_CONTEXT.onMapClick(ref.fed, ref.reg);
-        ref.getData();
-
+        EOCONTEXT.filterData.state = form.value;
+        EOCONTEXT.PLASHKA.refresh(EOCONTEXT.filterData);
     };
 
     this.fill_table = function(data){
@@ -73,14 +69,14 @@ var PLASHKA = function () {
         $('.wo_place_00_30').text(accounting.formatNumber(data.wo_place_00_30), 0, " ");
     };
 
-    this.getData = function() {
-        var url = "http://cabinetv3.do.edu.ru:8081/api/header?ym=" + ref.ym + "&fed=" + ref.fed + "&reg=" + ref.reg + "&mun=0";
+    this.paintTable = function(filterData) {
+        var url = "http://cabinetv3.do.edu.ru:8081/api/header?ym=" + ref.ym + "&fed=" + filterData.canton + "&reg=" + filterData.state + "&mun=0";
         $.getJSON(url, function (resp) {
             ref.fill_table(resp);
         });
     };
 
-    this.getReg = function(){
+    this.getReg = function(filterData){
         var url = "http://cabinetv3.do.edu.ru:8081/api/frm?mun=0&reg=0&fed=0";
         var selectReg = $('#select__states');
         selectReg.empty();
@@ -88,7 +84,7 @@ var PLASHKA = function () {
         $.getJSON(url, function (data) {
             data.forEach(function (item) {
 
-                if (item.fed == ref.fed) {
+                if (item.fed == filterData.canton) {
                     var reg = item.reg;
                     var name = item.shortname;
                     if (reg == 0) {
@@ -101,12 +97,21 @@ var PLASHKA = function () {
         });
     }
 
-    this.refresh = function(){
+    this.refresh = function(filterData){
 
 
         // перерисоваваем селекторы
+        if (filterData.canton == 0) {
+            $('#select__states').empty();
+            $('#select__states').append('<option value="0">Все регионы</option>');
+            $('#select__states').selectpicker('refresh');
+        } else {
+            ref.getReg(filterData);
+        }
+        //filterData.state = 0;
 
         // перерисовываем таблицу
+        ref.paintTable(filterData);
 
         // перерисовываем карту
         ref.triggerMapChanged(filterData);
