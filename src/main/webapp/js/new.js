@@ -5,14 +5,15 @@ $(document).ready(function () {
     }
     if (!!window.EOCONTEXT && !window.EOCONTEXT.MAP_CONTEXT) {
         window.EOCONTEXT.MAP_CONTEXT = new MAP_CONTEXT();
+        window.EOCONTEXT.MAP_CONTEXT2 = new MAP_CONTEXT();
     }
     if (!!window.EOCONTEXT && !window.EOCONTEXT.PLASHKA) {
         window.EOCONTEXT.PLASHKA = new PLASHKA();
     }
 
     $('.selectpicker').selectpicker({style: 'btn-xs btn-xm'});
-    //window.EOCONTEXT.PLASHKA.paintTable(window.EOCONTEXT.filterData);
-    window.EOCONTEXT.MAP_CONTEXT.initMap();
+    window.EOCONTEXT.MAP_CONTEXT.initMap('yamap');
+    window.EOCONTEXT.MAP_CONTEXT2.initMap('yamap2');
     window.EOCONTEXT.PLASHKA.refresh(window.EOCONTEXT.filterData);
 });
 
@@ -28,6 +29,18 @@ var EOCONTEXT = function (){
             municipality: m_val,
             isSlave: slaveSelect
         };
+    };
+    this.menuLeftOne = function(){
+        $('#charts__map').show();
+        $('#write_doo').hide();
+        $('#leftTwo').removeClass();
+        $('#leftOne').addClass('active');
+    };
+    this.menuLeftTwo = function(){
+        $('#charts__map').hide();
+        $('#write_doo').show();
+        $('#leftOne').removeClass();
+        $('#leftTwo').addClass('active');
     };
 };
 

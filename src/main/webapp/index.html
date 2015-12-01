@@ -56,18 +56,17 @@
         <div class="proj_name">Дошкольное образование</div>
     </div>
     <ul class="main_menu">
-        <li class="active">
+        <li id="leftOne" class="active">
             <!-- reload carent dataEo from server -->
-            <a href="javascript:void(0)" data-to="map.html">
+            <a href="javascript:window.EOCONTEXT.menuLeftOne();">
             <span>
                 <i class="icon-globe"></i>
                 Показатели
             </span>
             </a>
         </li>
-        <li>
-            <a href="javascript:void(0)" data-to="null"
-               data-hide-top-nav-panel="true">
+        <li id="leftTwo">
+            <a href="javascript:window.EOCONTEXT.menuLeftTwo();">
             <span>
                 <i class="icon-edit"></i>
                 Запись в ДОО
@@ -269,9 +268,10 @@
                     </tbody>
                 </table>
             </div>
-        </div>
-        <div id="write_doo">
             <div id="yamap" class="map_container map_disabled_pointer" style="padding: 0; height: 600px"></div>
+        </div>
+        <div id="write_doo" style="display: none">
+            <div id="yamap2" class="map_container map_disabled_pointer" style="padding: 0; height: 700px"></div>
         </div>
     </div>
 </div>

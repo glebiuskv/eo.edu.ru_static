@@ -4,15 +4,16 @@
 // -= new =-
 
 // global vars
-var map;
+
 var MAP_CONTEXT = function () {
     var ref = this;
+    var map;
 
-    this.initMap = function () {
+    this.initMap = function (yamapConteiner) {
 
-        ref.mapContainer = $('#yamap');
+        ref.mapContainer = $('#'+yamapConteiner);
         ref.setLegendMark = legend.draw({
-            containerSelector: '#yamap',
+            containerSelector: '#'+yamapConteiner,
             minValue: ref.minRegionValue,
             maxValue: ref.maxRegionValue,
             title: '',
@@ -21,26 +22,26 @@ var MAP_CONTEXT = function () {
         });
 
         map = new Map({
-            containerId: 'yamap',
+            containerId: yamapConteiner,
             viewMargin: [5, 5, 40, 5],
-            onClick: window.EOCONTEXT.MAP_CONTEXT.onMapClick
+            onClick: ref.onMapClick
             ,
             onReady: function () {
-                window.EOCONTEXT.MAP_CONTEXT.loadIndexValuesForMap();
-                window.EOCONTEXT.MAP_CONTEXT.changeMapView(window.EOCONTEXT.filterData);
+                ref.loadIndexValuesForMap();
+                ref.changeMapView(window.EOCONTEXT.filterData);
             },
             onChanged: function () {
-                waiter.stop(window.EOCONTEXT.MAP_CONTEXT.mapContainer);
+                waiter.stop(ref.mapContainer);
             },
             onRegionHover: function (value) {
-                if (typeof window.EOCONTEXT.MAP_CONTEXT.setLegendMark === 'function') {
-                    window.EOCONTEXT.MAP_CONTEXT.setLegendMark(value);
+                if (typeof ref.setLegendMark === 'function') {
+                    ref.setLegendMark(value);
                 }
             }
         });
 
-        window.EOCONTEXT.MAP_CONTEXT.mapContainer.show();
-        waiter.start(window.EOCONTEXT.MAP_CONTEXT.mapContainer);
+        ref.mapContainer.show();
+        waiter.start(ref.mapContainer);
     };
     this.mapRegionsData = {};
     this.additionalRegionsData = {};
@@ -192,7 +193,7 @@ var MAP_CONTEXT = function () {
             '<div style="font-size: 1.3em;"><b>',
             map.regionsInfo[osmId].name,
             '</b></br>',
-            window.EOCONTEXT.INDICATORS.context.chartLabel + ": ",//'Текущий показатель (отражен цветом на карте): ',
+            chartLabel + ": ",//'Текущий показатель (отражен цветом на карте): ',
             value,
             '<br/>',
             /*'Численность детей в очереди от 3 до 7 лет: ',
@@ -220,14 +221,14 @@ var MAP_CONTEXT = function () {
 
     this.changeMapView = function (filterData) {
         if (map !== undefined) {
-            waiter.start(window.EOCONTEXT.MAP_CONTEXT.mapContainer);
+            waiter.start(ref.mapContainer);
             if (filterData.canton > 0) {
                 map.showFederalDistrict(filterData.canton);
             }
             else {
                 map.showCountry();
             }
-            window.EOCONTEXT.MAP_CONTEXT.fixFireFoxGradientDisappearing();
+            ref.fixFireFoxGradientDisappearing();
         }
     };
 
