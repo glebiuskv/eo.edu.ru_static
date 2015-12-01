@@ -21,10 +21,12 @@ var EOCONTEXT = function (){
         var c_val = 0;
         var s_val = 0;
         var m_val = 0;
+        var slaveSelect = false;
         return {
             canton: c_val,
             state: s_val,
-            municipality: m_val
+            municipality: m_val,
+            isSlave: slaveSelect
         };
     };
 };
@@ -44,6 +46,7 @@ var PLASHKA = function () {
 
     this.slave_selector = function(form){
         window.EOCONTEXT.filterData.state = form.value;
+        window.EOCONTEXT.filterData.isSlave = true;
         window.EOCONTEXT.PLASHKA.refresh(window.EOCONTEXT.filterData);
     };
 
@@ -100,14 +103,19 @@ var PLASHKA = function () {
 
     this.refresh = function(filterData){
 
-
         // перерисоваваем селекторы
-        if (filterData.canton == 0) {
-            $('#select__states').empty();
-            $('#select__states').append('<option value="0">Все регионы</option>');
-            $('#select__states').selectpicker('refresh');
-        } else {
-            ref.getReg(filterData);
+        if (!filterData.isSlave) {
+            if (filterData.canton == 0) {
+                $('#select__states').empty();
+                $('#select__states').append('<option value="0">Все регионы</option>');
+                $('#select__states').selectpicker('refresh');
+                filterData.state = 0;
+            } else {
+                filterData.state = 0;
+                ref.getReg(filterData);
+            }
+        }else{
+            filterData.isSlave = false;
         }
 
         // перерисовываем таблицу
